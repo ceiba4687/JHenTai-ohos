@@ -5,12 +5,15 @@ import 'package:get/get.dart';
 import 'package:jhentai/src/enum/config_enum.dart';
 import 'package:jhentai/src/model/tap_zone_config.dart';
 import 'package:jhentai/src/service/log.dart';
+import 'package:jhentai/src/utils/platform_util.dart';
 
 import '../service/jh_service.dart';
 
 ReadSetting readSetting = ReadSetting();
 
-class ReadSetting with JHLifeCircleBeanWithConfigStorage implements JHLifeCircleBean {
+class ReadSetting
+    with JHLifeCircleBeanWithConfigStorage
+    implements JHLifeCircleBean {
   RxBool enableImmersiveMode = true.obs;
   RxBool keepScreenAwakeWhenReading = true.obs;
   RxBool enableCustomReadBrightness = false.obs;
@@ -25,9 +28,13 @@ class ReadSetting with JHLifeCircleBeanWithConfigStorage implements JHLifeCircle
   RxBool enableTapDragToScaleUp = false.obs;
   RxBool enableBottomMenu = false.obs;
   Rx<DeviceDirection> deviceDirection = DeviceDirection.followSystem.obs;
-  Rx<ReadDirection> readDirection = GetPlatform.isMobile ? ReadDirection.top2bottomList.obs : ReadDirection.left2rightList.obs;
+  Rx<ReadDirection> readDirection = JPlatform.isMobile
+      ? ReadDirection.top2bottomList.obs
+      : ReadDirection.left2rightList.obs;
   RxBool enableOrientationSpecificReadDirection = false.obs;
-  Rx<ReadDirection> portraitReadDirection = GetPlatform.isMobile ? ReadDirection.top2bottomList.obs : ReadDirection.left2rightList.obs;
+  Rx<ReadDirection> portraitReadDirection = JPlatform.isMobile
+      ? ReadDirection.top2bottomList.obs
+      : ReadDirection.left2rightList.obs;
   Rx<ReadDirection> landscapeReadDirection = ReadDirection.left2rightList.obs;
   RxBool notchOptimization = false.obs;
   RxInt imageRegionWidthRatio = 100.obs;
@@ -46,10 +53,12 @@ class ReadSetting with JHLifeCircleBeanWithConfigStorage implements JHLifeCircle
   RxBool displayFirstPageAlone = true.obs;
   RxBool portraitDisplayFirstPageAlone = true.obs;
   RxBool landscapeDisplayFirstPageAlone = true.obs;
-  RxBool enableMaxImageKilobyte =
-      (GetPlatform.isDesktop || PlatformDispatcher.instance.views.first.physicalSize.width / PlatformDispatcher.instance.views.first.devicePixelRatio >= 600)
-          ? false.obs
-          : true.obs;
+  RxBool enableMaxImageKilobyte = (GetPlatform.isDesktop ||
+          PlatformDispatcher.instance.views.first.physicalSize.width /
+                  PlatformDispatcher.instance.views.first.devicePixelRatio >=
+              600)
+      ? false.obs
+      : true.obs;
   RxInt maxImageKilobyte = (1024 * 5).obs;
   RxBool autoDetectWebtoon = false.obs;
 
@@ -59,7 +68,8 @@ class ReadSetting with JHLifeCircleBeanWithConfigStorage implements JHLifeCircle
       d == ReadDirection.right2leftList;
 
   static bool isDoubleColumnDirection(ReadDirection d) =>
-      d == ReadDirection.left2rightDoubleColumn || d == ReadDirection.right2leftDoubleColumn;
+      d == ReadDirection.left2rightDoubleColumn ||
+      d == ReadDirection.right2leftDoubleColumn;
 
   static bool isSinglePageDirection(ReadDirection d) =>
       d == ReadDirection.left2rightSinglePage ||
@@ -68,7 +78,8 @@ class ReadSetting with JHLifeCircleBeanWithConfigStorage implements JHLifeCircle
       d == ReadDirection.right2leftSinglePageFitWidth;
 
   static bool isFitWidthDirection(ReadDirection d) =>
-      d == ReadDirection.left2rightSinglePageFitWidth || d == ReadDirection.right2leftSinglePageFitWidth;
+      d == ReadDirection.left2rightSinglePageFitWidth ||
+      d == ReadDirection.right2leftSinglePageFitWidth;
 
   static bool isRight2LeftDirection(ReadDirection d) =>
       d == ReadDirection.right2leftSinglePage ||
@@ -77,43 +88,49 @@ class ReadSetting with JHLifeCircleBeanWithConfigStorage implements JHLifeCircle
       d == ReadDirection.right2leftList;
 
   bool get isInListReadDirection {
-    if (enableOrientationSpecificReadDirection.isTrue && GetPlatform.isMobile) {
-      return isListDirection(portraitReadDirection.value) || isListDirection(landscapeReadDirection.value);
+    if (enableOrientationSpecificReadDirection.isTrue && JPlatform.isMobile) {
+      return isListDirection(portraitReadDirection.value) ||
+          isListDirection(landscapeReadDirection.value);
     }
     return isListDirection(readDirection.value);
   }
 
   bool get isEveryInListReadDirection {
-    if (enableOrientationSpecificReadDirection.isTrue && GetPlatform.isMobile) {
-      return isListDirection(portraitReadDirection.value) && isListDirection(landscapeReadDirection.value);
+    if (enableOrientationSpecificReadDirection.isTrue && JPlatform.isMobile) {
+      return isListDirection(portraitReadDirection.value) &&
+          isListDirection(landscapeReadDirection.value);
     }
     return isListDirection(readDirection.value);
   }
 
   bool get isInSinglePageReadDirection {
-    if (enableOrientationSpecificReadDirection.isTrue && GetPlatform.isMobile) {
-      return isSinglePageDirection(portraitReadDirection.value) || isSinglePageDirection(landscapeReadDirection.value);
+    if (enableOrientationSpecificReadDirection.isTrue && JPlatform.isMobile) {
+      return isSinglePageDirection(portraitReadDirection.value) ||
+          isSinglePageDirection(landscapeReadDirection.value);
     }
     return isSinglePageDirection(readDirection.value);
   }
 
   bool get isInFitWidthReadDirection {
-    if (enableOrientationSpecificReadDirection.isTrue && GetPlatform.isMobile) {
-      return isFitWidthDirection(portraitReadDirection.value) || isFitWidthDirection(landscapeReadDirection.value);
+    if (enableOrientationSpecificReadDirection.isTrue && JPlatform.isMobile) {
+      return isFitWidthDirection(portraitReadDirection.value) ||
+          isFitWidthDirection(landscapeReadDirection.value);
     }
     return isFitWidthDirection(readDirection.value);
   }
 
   bool get isInDoubleColumnReadDirection {
-    if (enableOrientationSpecificReadDirection.isTrue && GetPlatform.isMobile) {
-      return isDoubleColumnDirection(portraitReadDirection.value) || isDoubleColumnDirection(landscapeReadDirection.value);
+    if (enableOrientationSpecificReadDirection.isTrue && JPlatform.isMobile) {
+      return isDoubleColumnDirection(portraitReadDirection.value) ||
+          isDoubleColumnDirection(landscapeReadDirection.value);
     }
     return isDoubleColumnDirection(readDirection.value);
   }
 
   bool get isInRight2LeftDirection {
-    if (enableOrientationSpecificReadDirection.isTrue && GetPlatform.isMobile) {
-      return isRight2LeftDirection(portraitReadDirection.value) || isRight2LeftDirection(landscapeReadDirection.value);
+    if (enableOrientationSpecificReadDirection.isTrue && JPlatform.isMobile) {
+      return isRight2LeftDirection(portraitReadDirection.value) ||
+          isRight2LeftDirection(landscapeReadDirection.value);
     }
     return isRight2LeftDirection(readDirection.value);
   }
@@ -126,45 +143,78 @@ class ReadSetting with JHLifeCircleBeanWithConfigStorage implements JHLifeCircle
     Map map = jsonDecode(configString);
 
     enableImmersiveMode.value = map['enableImmersiveMode'];
-    keepScreenAwakeWhenReading.value = map['keepScreenAwakeWhenReading'] ?? keepScreenAwakeWhenReading.value;
-    enableCustomReadBrightness.value = map['enableCustomReadBrightness'] ?? enableCustomReadBrightness.value;
+    keepScreenAwakeWhenReading.value =
+        map['keepScreenAwakeWhenReading'] ?? keepScreenAwakeWhenReading.value;
+    enableCustomReadBrightness.value =
+        map['enableCustomReadBrightness'] ?? enableCustomReadBrightness.value;
     customBrightness.value = map['customBrightness'] ?? customBrightness.value;
     imageSpace.value = map['imageSpace'] ?? imageSpace.value;
     showThumbnails.value = map['showThumbnails'] ?? showThumbnails.value;
     showScrollBar.value = map['showScrollBar'] ?? showScrollBar.value;
     showStatusInfo.value = map['showStatusInfo'] ?? showStatusInfo.value;
-    enablePageTurnByVolumeKeys.value = map['enablePageTurnByVolumeKeys'] ?? enablePageTurnByVolumeKeys.value;
+    enablePageTurnByVolumeKeys.value =
+        map['enablePageTurnByVolumeKeys'] ?? enablePageTurnByVolumeKeys.value;
     enablePageTurnAnime.value = map['enablePageTurnAnime'];
-    enableDoubleTapToScaleUp.value = map['enableDoubleTapToScaleUp'] ?? enableDoubleTapToScaleUp.value;
-    enableTapDragToScaleUp.value = map['enableTapDragToScaleUp'] ?? enableTapDragToScaleUp.value;
+    enableDoubleTapToScaleUp.value =
+        map['enableDoubleTapToScaleUp'] ?? enableDoubleTapToScaleUp.value;
+    enableTapDragToScaleUp.value =
+        map['enableTapDragToScaleUp'] ?? enableTapDragToScaleUp.value;
     enableBottomMenu.value = map['enableBottomMenu'] ?? enableBottomMenu.value;
     autoModeInterval.value = map['autoModeInterval'] ?? autoModeInterval.value;
-    autoModeStyle.value = AutoModeStyle.values[map['autoModeStyle'] ?? AutoModeStyle.scroll.index];
-    deviceDirection.value = DeviceDirection.values[map['deviceDirection'] ?? DeviceDirection.followSystem.index];
+    autoModeStyle.value = AutoModeStyle
+        .values[map['autoModeStyle'] ?? AutoModeStyle.scroll.index];
+    deviceDirection.value = DeviceDirection
+        .values[map['deviceDirection'] ?? DeviceDirection.followSystem.index];
     readDirection.value = ReadDirection.values[map['readDirection']];
-    notchOptimization.value = map['notchOptimization'] ?? notchOptimization.value;
-    imageRegionWidthRatio.value = map['imageRegionWidthRatio'] ?? imageRegionWidthRatio.value;
-    portraitImageRegionWidthRatio.value = map['portraitImageRegionWidthRatio'] ?? map['imageRegionWidthRatio'] ?? portraitImageRegionWidthRatio.value;
-    landscapeImageRegionWidthRatio.value = map['landscapeImageRegionWidthRatio'] ?? map['imageRegionWidthRatio'] ?? landscapeImageRegionWidthRatio.value;
-    tapZoneConfigJson.value = map['tapZoneConfig'] ?? TapZoneConfig.classic().toJsonString();
+    notchOptimization.value =
+        map['notchOptimization'] ?? notchOptimization.value;
+    imageRegionWidthRatio.value =
+        map['imageRegionWidthRatio'] ?? imageRegionWidthRatio.value;
+    portraitImageRegionWidthRatio.value =
+        map['portraitImageRegionWidthRatio'] ??
+            map['imageRegionWidthRatio'] ??
+            portraitImageRegionWidthRatio.value;
+    landscapeImageRegionWidthRatio.value =
+        map['landscapeImageRegionWidthRatio'] ??
+            map['imageRegionWidthRatio'] ??
+            landscapeImageRegionWidthRatio.value;
+    tapZoneConfigJson.value =
+        map['tapZoneConfig'] ?? TapZoneConfig.classic().toJsonString();
     _cachedTapZoneConfig = null;
-    useThirdPartyViewer.value = map['useThirdPartyViewer'] ?? useThirdPartyViewer.value;
+    useThirdPartyViewer.value =
+        map['useThirdPartyViewer'] ?? useThirdPartyViewer.value;
     thirdPartyViewerPath.value = map['thirdPartyViewerPath'];
     turnPageMode.value = TurnPageMode.values[map['turnPageMode']];
     preloadDistance.value = map['preloadDistance'];
-    preloadDistanceLocal.value = map['preloadDistanceLocal'] ?? preloadDistanceLocal.value;
+    preloadDistanceLocal.value =
+        map['preloadDistanceLocal'] ?? preloadDistanceLocal.value;
     preloadPageCount.value = map['preloadPageCount'];
-    preloadPageCountLocal.value = map['preloadPageCountLocal'] ?? preloadPageCountLocal.value;
-    displayFirstPageAlone.value = map['displayFirstPageAlone'] ?? displayFirstPageAlone.value;
-    portraitDisplayFirstPageAlone.value = map['portraitDisplayFirstPageAlone'] ?? map['displayFirstPageAlone'] ?? portraitDisplayFirstPageAlone.value;
-    landscapeDisplayFirstPageAlone.value = map['landscapeDisplayFirstPageAlone'] ?? map['displayFirstPageAlone'] ?? landscapeDisplayFirstPageAlone.value;
-    enableMaxImageKilobyte.value = map['enableMaxImageKilobyte'] ?? enableMaxImageKilobyte.value;
+    preloadPageCountLocal.value =
+        map['preloadPageCountLocal'] ?? preloadPageCountLocal.value;
+    displayFirstPageAlone.value =
+        map['displayFirstPageAlone'] ?? displayFirstPageAlone.value;
+    portraitDisplayFirstPageAlone.value =
+        map['portraitDisplayFirstPageAlone'] ??
+            map['displayFirstPageAlone'] ??
+            portraitDisplayFirstPageAlone.value;
+    landscapeDisplayFirstPageAlone.value =
+        map['landscapeDisplayFirstPageAlone'] ??
+            map['displayFirstPageAlone'] ??
+            landscapeDisplayFirstPageAlone.value;
+    enableMaxImageKilobyte.value =
+        map['enableMaxImageKilobyte'] ?? enableMaxImageKilobyte.value;
     maxImageKilobyte.value = map['maxImageKilobyte'] ?? maxImageKilobyte.value;
-    enableOrientationSpecificReadDirection.value = map['enableOrientationSpecificReadDirection'] ?? enableOrientationSpecificReadDirection.value;
-    autoDetectWebtoon.value = map['autoDetectWebtoon'] ?? autoDetectWebtoon.value;
+    enableOrientationSpecificReadDirection.value =
+        map['enableOrientationSpecificReadDirection'] ??
+            enableOrientationSpecificReadDirection.value;
+    autoDetectWebtoon.value =
+        map['autoDetectWebtoon'] ?? autoDetectWebtoon.value;
+
     /// On first load, migrate existing readDirection to both portrait and landscape
-    portraitReadDirection.value = ReadDirection.values[map['portraitReadDirection'] ?? map['readDirection']];
-    landscapeReadDirection.value = ReadDirection.values[map['landscapeReadDirection'] ?? map['readDirection']];
+    portraitReadDirection.value = ReadDirection
+        .values[map['portraitReadDirection'] ?? map['readDirection']];
+    landscapeReadDirection.value = ReadDirection
+        .values[map['landscapeReadDirection'] ?? map['readDirection']];
   }
 
   @override
@@ -204,7 +254,8 @@ class ReadSetting with JHLifeCircleBeanWithConfigStorage implements JHLifeCircle
       'landscapeDisplayFirstPageAlone': landscapeDisplayFirstPageAlone.value,
       'enableMaxImageKilobyte': enableMaxImageKilobyte.value,
       'maxImageKilobyte': maxImageKilobyte.value,
-      'enableOrientationSpecificReadDirection': enableOrientationSpecificReadDirection.value,
+      'enableOrientationSpecificReadDirection':
+          enableOrientationSpecificReadDirection.value,
       'autoDetectWebtoon': autoDetectWebtoon.value,
       'portraitReadDirection': portraitReadDirection.value.index,
       'landscapeReadDirection': landscapeReadDirection.value.index,

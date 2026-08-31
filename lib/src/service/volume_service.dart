@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:volume_button_override/volume_button_override.dart';
 
+import '../utils/platform_util.dart';
 import 'jh_service.dart';
 import 'log.dart';
 
@@ -11,8 +12,11 @@ VolumeService volumeService = VolumeService();
 /// Listens to volume key events so that they can be used to turn page in read page.
 ///
 /// - On Android, volume events are intercepted natively via [methodChannel], and the system volume won't change.
+/// - On HarmonyOS, volume events are intercepted through InputKit and forwarded via [methodChannel].
 /// - On iOS, volume events are captured via [VolumeButtonController], the system volume may still change.
-class VolumeService extends GetxService with WidgetsBindingObserver, JHLifeCircleBeanErrorCatch implements JHLifeCircleBean {
+class VolumeService extends GetxService
+    with WidgetsBindingObserver, JHLifeCircleBeanErrorCatch
+    implements JHLifeCircleBean {
   static const int _volumeUp = 1;
   static const int _volumeDown = -1;
 
@@ -31,8 +35,9 @@ class VolumeService extends GetxService with WidgetsBindingObserver, JHLifeCircl
   Future<void> doAfterBeanReady() async {
     WidgetsBinding.instance.addObserver(this);
 
-    if (GetPlatform.isAndroid) {
-      _methodChannel = const MethodChannel('top.jtmonster.jhentai.volume.event.intercept');
+    if (GetPlatform.isAndroid || JPlatform.isOhos) {
+      _methodChannel =
+          const MethodChannel('top.jtmonster.jhentai.volume.event.intercept');
     }
   }
 
@@ -47,7 +52,9 @@ class VolumeService extends GetxService with WidgetsBindingObserver, JHLifeCircl
   void didChangeAppLifecycleState(AppLifecycleState state) {
     /// iOS deactivates the ambient audio session when the app is backgrounded, which stops volume
     /// button events from being observed; re-establish the listener when the app is resumed.
-    if (GetPlatform.isIOS && state == AppLifecycleState.resumed && _listener != null) {
+    if (GetPlatform.isIOS &&
+        state == AppLifecycleState.resumed &&
+        _listener != null) {
       listen(_listener!);
     }
   }
@@ -56,7 +63,7 @@ class VolumeService extends GetxService with WidgetsBindingObserver, JHLifeCircl
     await cancelListen();
     _listener = onData;
 
-    if (GetPlatform.isAndroid) {
+    if (GetPlatform.isAndroid || JPlatform.isOhos) {
       try {
         await _methodChannel.invokeMethod('set', true);
       } on PlatformException catch (e) {
@@ -81,8 +88,12 @@ class VolumeService extends GetxService with WidgetsBindingObserver, JHLifeCircl
     } else if (GetPlatform.isIOS) {
       try {
         _isListening = await _iosController.startListening(
-          volumeUpAction: ButtonAction(id: ButtonActionId.volumeUp, onAction: () => onData(VolumeEventType.volumeUp)),
-          volumeDownAction: ButtonAction(id: ButtonActionId.volumeDown, onAction: () => onData(VolumeEventType.volumeDown)),
+          volumeUpAction: ButtonAction(
+              id: ButtonActionId.volumeUp,
+              onAction: () => onData(VolumeEventType.volumeUp)),
+          volumeDownAction: ButtonAction(
+              id: ButtonActionId.volumeDown,
+              onAction: () => onData(VolumeEventType.volumeDown)),
         );
       } catch (e) {
         log.error('Start listening to volume button error!', e);
@@ -93,7 +104,7 @@ class VolumeService extends GetxService with WidgetsBindingObserver, JHLifeCircl
 
   Future<void> cancelListen() async {
     if (_isListening) {
-      if (GetPlatform.isAndroid) {
+      if (GetPlatform.isAndroid || JPlatform.isOhos) {
         try {
           await _methodChannel.invokeMethod('set', false);
         } on PlatformException catch (e) {

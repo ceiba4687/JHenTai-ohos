@@ -1,4 +1,4 @@
-import 'package:file_picker/file_picker.dart';
+import 'package:file_picker_ohos/file_picker_ohos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -9,6 +9,7 @@ import 'package:jhentai/src/pages/setting/read/tap_zone/setting_tap_zone_page.da
 import 'package:jhentai/src/setting/preference_setting.dart';
 import 'package:jhentai/src/setting/read_setting.dart';
 import 'package:jhentai/src/setting/style_setting.dart';
+import 'package:jhentai/src/utils/platform_util.dart';
 
 import '../../../routes/routes.dart';
 import '../../../service/log.dart';
@@ -18,11 +19,18 @@ import '../../../utils/toast_util.dart';
 import '../../home_page.dart';
 
 class SettingReadPage extends StatelessWidget {
-  final TextEditingController imageRegionWidthRatioController = TextEditingController(text: readSetting.imageRegionWidthRatio.value.toString());
-  final TextEditingController portraitImageRegionWidthRatioController = TextEditingController(text: readSetting.portraitImageRegionWidthRatio.value.toString());
+  final TextEditingController imageRegionWidthRatioController =
+      TextEditingController(
+          text: readSetting.imageRegionWidthRatio.value.toString());
+  final TextEditingController portraitImageRegionWidthRatioController =
+      TextEditingController(
+          text: readSetting.portraitImageRegionWidthRatio.value.toString());
   final TextEditingController landscapeImageRegionWidthRatioController =
-  TextEditingController(text: readSetting.landscapeImageRegionWidthRatio.value.toString());
-  final TextEditingController imageMaxKilobytesController = TextEditingController(text: readSetting.maxImageKilobyte.value.toString());
+      TextEditingController(
+          text: readSetting.landscapeImageRegionWidthRatio.value.toString());
+  final TextEditingController imageMaxKilobytesController =
+      TextEditingController(
+          text: readSetting.maxImageKilobyte.value.toString());
 
   SettingReadPage({Key? key}) : super(key: key);
 
@@ -31,70 +39,131 @@ class SettingReadPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: Text('readSetting'.tr)),
       body: Obx(
-            () =>
-            SafeArea(
-              child: ListView(
-                padding: const EdgeInsets.only(top: 16),
-                children: [
-                  if (GetPlatform.isMobile || GetPlatform.isWindows) _buildEnableImmersiveMode().center(),
-                  _buildKeepScreenAwake().center(),
-                  if (GetPlatform.isMobile) _buildEnableCustomReadBrightness().center(),
-                  if (GetPlatform.isMobile) _buildCustomReadBrightness().center(),
-                  _buildShowThumbnails().center(),
-                  _buildShowScrollBar().center(),
-                  _buildShowStatusInfo().center(),
-                  if (GetPlatform.isMobile) _buildEnablePageTurnByVolumeKeys().center(),
-                  _buildEnablePageTurnAnime().center(),
-                  _buildEnableDoubleTapToScaleUp().center(),
-                  _buildEnableTapDragToScaleUp().center(),
-                  _buildEnableBottomMenu().center(),
-                  _buildTapZoneStyle(context).center(),
-                  _buildEnableImageMaxKilobytes().center(),
-                  if (readSetting.enableMaxImageKilobyte.isTrue) _buildImageMaxKilobytes(context).fadeIn(const Key('imageMaxKilobytes')).center(),
-                  if (GetPlatform.isDesktop) _buildUseThirdPartyViewer().center(),
-                  if (GetPlatform.isDesktop) _buildThirdPartyViewerPath().center(),
-                  if (GetPlatform.isDesktop) _buildKeyboardShortcuts(context).center(),
-                  if (GetPlatform.isMobile) _buildDeviceDirection().center(),
-                  if (GetPlatform.isMobile) _buildEnableOrientationSpecificReadDirection().center(),
-                  if (GetPlatform.isMobile && readSetting.enableOrientationSpecificReadDirection.isTrue)
-                    _buildPortraitReadDirection().fadeIn(const Key('portraitReadDirection')).center(),
-                  if (GetPlatform.isMobile && readSetting.enableOrientationSpecificReadDirection.isTrue)
-                    _buildLandscapeReadDirection().fadeIn(const Key('landscapeReadDirection')).center(),
-                  if (!GetPlatform.isMobile || readSetting.enableOrientationSpecificReadDirection.isFalse) _buildReadDirection().center(),
-                  _buildAutoDetectWebtoon().center(),
-                  if (GetPlatform.isMobile && readSetting.enableOrientationSpecificReadDirection.isTrue
-                      ? (readSetting.portraitReadDirection.value == ReadDirection.top2bottomList ||
-                      readSetting.landscapeReadDirection.value == ReadDirection.top2bottomList)
-                      : readSetting.readDirection.value == ReadDirection.top2bottomList)
-                    _buildNotchOptimization().center(),
-                  if (GetPlatform.isMobile && readSetting.enableOrientationSpecificReadDirection.isTrue) ...[
-                    if (readSetting.portraitReadDirection.value == ReadDirection.top2bottomList)
-                      _buildPortraitImageRegionWidthRatio(context).fadeIn(const Key('portraitImageRegionWidthRatio')).center(),
-                    if (readSetting.landscapeReadDirection.value == ReadDirection.top2bottomList)
-                      _buildLandscapeImageRegionWidthRatio(context).fadeIn(const Key('landscapeImageRegionWidthRatio')).center(),
-                  ],
-                  if (!GetPlatform.isMobile || readSetting.enableOrientationSpecificReadDirection.isFalse)
-                    if (readSetting.readDirection.value == ReadDirection.top2bottomList) _buildImageRegionWidthRatio(context).center(),
-                  if (readSetting.isInListReadDirection) _buildPreloadDistanceInOnlineMode(context).fadeIn(const Key('preloadDistanceInOnlineMode')).center(),
-                  if (readSetting.isInListReadDirection) _buildPreloadDistanceInLocalMode(context).fadeIn(const Key('preloadDistanceInLocalMode')).center(),
-                  if (!readSetting.isEveryInListReadDirection) _buildPreloadPageCount().fadeIn(const Key('preloadPageCount')).center(),
-                  if (!readSetting.isEveryInListReadDirection) _buildPreloadPageCountInLocalMode().fadeIn(const Key('preloadPageCountInLocalMode')).center(),
-                  if (GetPlatform.isMobile && readSetting.enableOrientationSpecificReadDirection.isTrue) ...[
-                    if (readSetting.portraitReadDirection.value == ReadDirection.left2rightDoubleColumn ||
-                        readSetting.portraitReadDirection.value == ReadDirection.right2leftDoubleColumn)
-                      _buildPortraitDisplayFirstPageAlone().fadeIn(const Key('portraitDisplayFirstPageAlone')).center(),
-                    if (readSetting.landscapeReadDirection.value == ReadDirection.left2rightDoubleColumn ||
-                        readSetting.landscapeReadDirection.value == ReadDirection.right2leftDoubleColumn)
-                      _buildLandscapeDisplayFirstPageAlone().fadeIn(const Key('landscapeDisplayFirstPageAlone')).center(),
-                  ],
-                  if (!GetPlatform.isMobile || readSetting.enableOrientationSpecificReadDirection.isFalse)
-                    if (readSetting.isInDoubleColumnReadDirection) _buildDisplayFirstPageAlone().fadeIn(const Key('displayFirstPageAloneGlobally')).center(),
-                  if (readSetting.isInListReadDirection) _buildAutoModeStyle().fadeIn(const Key('autoModeStyle')).center(),
-                  if (readSetting.isInListReadDirection) _buildTurnPageMode().fadeIn(const Key('turnPageMode')).center(),
-                  _buildImageSpace().center(),
-                ],
-              ).withListTileTheme(context),
-            ),
+        () => SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.only(top: 16),
+            children: [
+              if (JPlatform.isMobile || GetPlatform.isWindows)
+                _buildEnableImmersiveMode().center(),
+              _buildKeepScreenAwake().center(),
+              if (JPlatform.supportsScreenBrightness)
+                _buildEnableCustomReadBrightness().center(),
+              if (JPlatform.supportsScreenBrightness)
+                _buildCustomReadBrightness().center(),
+              _buildShowThumbnails().center(),
+              _buildShowScrollBar().center(),
+              _buildShowStatusInfo().center(),
+              if (JPlatform.isMobile)
+                _buildEnablePageTurnByVolumeKeys().center(),
+              _buildEnablePageTurnAnime().center(),
+              _buildEnableDoubleTapToScaleUp().center(),
+              _buildEnableTapDragToScaleUp().center(),
+              _buildEnableBottomMenu().center(),
+              _buildTapZoneStyle(context).center(),
+              _buildEnableImageMaxKilobytes().center(),
+              if (readSetting.enableMaxImageKilobyte.isTrue)
+                _buildImageMaxKilobytes(context)
+                    .fadeIn(const Key('imageMaxKilobytes'))
+                    .center(),
+              if (GetPlatform.isDesktop) _buildUseThirdPartyViewer().center(),
+              if (GetPlatform.isDesktop) _buildThirdPartyViewerPath().center(),
+              if (GetPlatform.isDesktop)
+                _buildKeyboardShortcuts(context).center(),
+              if (JPlatform.isMobile) _buildDeviceDirection().center(),
+              if (JPlatform.isMobile)
+                _buildEnableOrientationSpecificReadDirection().center(),
+              if (JPlatform.isMobile &&
+                  readSetting.enableOrientationSpecificReadDirection.isTrue)
+                _buildPortraitReadDirection()
+                    .fadeIn(const Key('portraitReadDirection'))
+                    .center(),
+              if (JPlatform.isMobile &&
+                  readSetting.enableOrientationSpecificReadDirection.isTrue)
+                _buildLandscapeReadDirection()
+                    .fadeIn(const Key('landscapeReadDirection'))
+                    .center(),
+              if (!JPlatform.isMobile ||
+                  readSetting.enableOrientationSpecificReadDirection.isFalse)
+                _buildReadDirection().center(),
+              _buildAutoDetectWebtoon().center(),
+              if (JPlatform.isMobile &&
+                      readSetting.enableOrientationSpecificReadDirection.isTrue
+                  ? (readSetting.portraitReadDirection.value ==
+                          ReadDirection.top2bottomList ||
+                      readSetting.landscapeReadDirection.value ==
+                          ReadDirection.top2bottomList)
+                  : readSetting.readDirection.value ==
+                      ReadDirection.top2bottomList)
+                _buildNotchOptimization().center(),
+              if (JPlatform.isMobile &&
+                  readSetting
+                      .enableOrientationSpecificReadDirection.isTrue) ...[
+                if (readSetting.portraitReadDirection.value ==
+                    ReadDirection.top2bottomList)
+                  _buildPortraitImageRegionWidthRatio(context)
+                      .fadeIn(const Key('portraitImageRegionWidthRatio'))
+                      .center(),
+                if (readSetting.landscapeReadDirection.value ==
+                    ReadDirection.top2bottomList)
+                  _buildLandscapeImageRegionWidthRatio(context)
+                      .fadeIn(const Key('landscapeImageRegionWidthRatio'))
+                      .center(),
+              ],
+              if (!JPlatform.isMobile ||
+                  readSetting.enableOrientationSpecificReadDirection.isFalse)
+                if (readSetting.readDirection.value ==
+                    ReadDirection.top2bottomList)
+                  _buildImageRegionWidthRatio(context).center(),
+              if (readSetting.isInListReadDirection)
+                _buildPreloadDistanceInOnlineMode(context)
+                    .fadeIn(const Key('preloadDistanceInOnlineMode'))
+                    .center(),
+              if (readSetting.isInListReadDirection)
+                _buildPreloadDistanceInLocalMode(context)
+                    .fadeIn(const Key('preloadDistanceInLocalMode'))
+                    .center(),
+              if (!readSetting.isEveryInListReadDirection)
+                _buildPreloadPageCount()
+                    .fadeIn(const Key('preloadPageCount'))
+                    .center(),
+              if (!readSetting.isEveryInListReadDirection)
+                _buildPreloadPageCountInLocalMode()
+                    .fadeIn(const Key('preloadPageCountInLocalMode'))
+                    .center(),
+              if (JPlatform.isMobile &&
+                  readSetting
+                      .enableOrientationSpecificReadDirection.isTrue) ...[
+                if (readSetting.portraitReadDirection.value ==
+                        ReadDirection.left2rightDoubleColumn ||
+                    readSetting.portraitReadDirection.value ==
+                        ReadDirection.right2leftDoubleColumn)
+                  _buildPortraitDisplayFirstPageAlone()
+                      .fadeIn(const Key('portraitDisplayFirstPageAlone'))
+                      .center(),
+                if (readSetting.landscapeReadDirection.value ==
+                        ReadDirection.left2rightDoubleColumn ||
+                    readSetting.landscapeReadDirection.value ==
+                        ReadDirection.right2leftDoubleColumn)
+                  _buildLandscapeDisplayFirstPageAlone()
+                      .fadeIn(const Key('landscapeDisplayFirstPageAlone'))
+                      .center(),
+              ],
+              if (!JPlatform.isMobile ||
+                  readSetting.enableOrientationSpecificReadDirection.isFalse)
+                if (readSetting.isInDoubleColumnReadDirection)
+                  _buildDisplayFirstPageAlone()
+                      .fadeIn(const Key('displayFirstPageAloneGlobally'))
+                      .center(),
+              if (readSetting.isInListReadDirection)
+                _buildAutoModeStyle()
+                    .fadeIn(const Key('autoModeStyle'))
+                    .center(),
+              if (readSetting.isInListReadDirection)
+                _buildTurnPageMode().fadeIn(const Key('turnPageMode')).center(),
+              _buildImageSpace().center(),
+            ],
+          ).withListTileTheme(context),
+        ),
       ),
     );
   }
@@ -102,7 +171,9 @@ class SettingReadPage extends StatelessWidget {
   Widget _buildEnableImmersiveMode() {
     return SwitchListTile(
       title: Text('enableImmersiveMode'.tr),
-      subtitle: GetPlatform.isMobile ? Text('enableImmersiveHint'.tr) : Text('enableImmersiveHint4Windows'.tr),
+      subtitle: JPlatform.isMobile
+          ? Text('enableImmersiveHint'.tr)
+          : Text('enableImmersiveHint4Windows'.tr),
       value: readSetting.enableImmersiveMode.value,
       onChanged: readSetting.saveEnableImmersiveMode,
     );
@@ -150,7 +221,8 @@ class SettingReadPage extends StatelessWidget {
         Expanded(
           child: Slider(
             value: readSetting.customBrightness.value.toDouble(),
-            onChanged: (double value) => readSetting.saveCustomBrightness(value.toInt()),
+            onChanged: (double value) =>
+                readSetting.saveCustomBrightness(value.toInt()),
             min: 0,
             max: 100,
           ),
@@ -210,7 +282,8 @@ class SettingReadPage extends StatelessWidget {
   Widget _buildEnablePageTurnByVolumeKeys() {
     return SwitchListTile(
       title: Text('enablePageTurnByVolumeKeys'.tr),
-      subtitle: GetPlatform.isIOS ? Text('enablePageTurnByVolumeKeysHint'.tr) : null,
+      subtitle:
+          GetPlatform.isIOS ? Text('enablePageTurnByVolumeKeysHint'.tr) : null,
       value: readSetting.enablePageTurnByVolumeKeys.value,
       onChanged: readSetting.saveEnablePageTurnByVolumeKeys,
     );
@@ -263,21 +336,26 @@ class SettingReadPage extends StatelessWidget {
             nearestNav.widget.key != Get.keys[rightV2]) {
           nearestNav.push(
             PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) => const SettingTapZonePage(),
-                transitionsBuilder: preferenceSetting.enableSwipeBackGesture.isTrue && styleSetting.isInMobileLayout
-                    ? (context, animation, secondaryAnimation, child) =>
-                    SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(1, 0),
-                        end: Offset.zero,
-                      ).animate(CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeInOut,
-                      )),
-                      child: child,
-                    )
-                    : (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
-                transitionDuration: UIConfig.defaultPageRouteTransitionDuration),
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const SettingTapZonePage(),
+                transitionsBuilder:
+                    preferenceSetting.enableSwipeBackGesture.isTrue &&
+                            styleSetting.isInMobileLayout
+                        ? (context, animation, secondaryAnimation, child) =>
+                            SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              )),
+                              child: child,
+                            )
+                        : (context, animation, secondaryAnimation, child) =>
+                            FadeTransition(opacity: animation, child: child),
+                transitionDuration:
+                    UIConfig.defaultPageRouteTransitionDuration),
           );
         } else {
           toRoute(Routes.settingTapZoneStyle);
@@ -304,12 +382,17 @@ class SettingReadPage extends StatelessWidget {
             width: 50,
             child: TextField(
               controller: imageMaxKilobytesController,
-              decoration: const InputDecoration(isDense: true, labelStyle: TextStyle(fontSize: 12)),
+              decoration: const InputDecoration(
+                  isDense: true, labelStyle: TextStyle(fontSize: 12)),
               textAlign: TextAlign.center,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly, IntRangeTextInputFormatter(minValue: 1)],
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                IntRangeTextInputFormatter(minValue: 1)
+              ],
             ),
           ),
-          Text('KB', style: UIConfig.settingPageListTileTrailingTextStyle(context)),
+          Text('KB',
+              style: UIConfig.settingPageListTileTrailingTextStyle(context)),
           IconButton(
             onPressed: () {
               int? value = int.tryParse(imageMaxKilobytesController.value.text);
@@ -319,7 +402,8 @@ class SettingReadPage extends StatelessWidget {
               readSetting.saveMaxImageKilobyte(value);
               toast('saveSuccess'.tr);
             },
-            icon: Icon(Icons.check, color: UIConfig.resumePauseButtonColor(context)),
+            icon: Icon(Icons.check,
+                color: UIConfig.resumePauseButtonColor(context)),
           ),
         ],
       ),
@@ -332,11 +416,16 @@ class SettingReadPage extends StatelessWidget {
       trailing: DropdownButton<DeviceDirection>(
         value: readSetting.deviceDirection.value,
         elevation: 4,
-        onChanged: (DeviceDirection? newValue) => readSetting.saveDeviceDirection(newValue!),
+        onChanged: (DeviceDirection? newValue) =>
+            readSetting.saveDeviceDirection(newValue!),
         items: [
-          DropdownMenuItem(child: Text('followSystem'.tr), value: DeviceDirection.followSystem),
-          DropdownMenuItem(child: Text('landscape'.tr), value: DeviceDirection.landscape),
-          DropdownMenuItem(child: Text('portrait'.tr), value: DeviceDirection.portrait),
+          DropdownMenuItem(
+              child: Text('followSystem'.tr),
+              value: DeviceDirection.followSystem),
+          DropdownMenuItem(
+              child: Text('landscape'.tr), value: DeviceDirection.landscape),
+          DropdownMenuItem(
+              child: Text('portrait'.tr), value: DeviceDirection.portrait),
         ],
       ).marginOnly(right: 12),
     );
@@ -357,8 +446,11 @@ class SettingReadPage extends StatelessWidget {
       trailing: DropdownButton<ReadDirection>(
         value: readSetting.portraitReadDirection.value,
         elevation: 4,
-        onChanged: (ReadDirection? newValue) => readSetting.savePortraitReadDirection(newValue!),
-        items: ReadDirection.values.map((e) => DropdownMenuItem(child: Text(e.name.tr), value: e)).toList(),
+        onChanged: (ReadDirection? newValue) =>
+            readSetting.savePortraitReadDirection(newValue!),
+        items: ReadDirection.values
+            .map((e) => DropdownMenuItem(child: Text(e.name.tr), value: e))
+            .toList(),
       ).marginOnly(right: 12),
     );
   }
@@ -369,8 +461,11 @@ class SettingReadPage extends StatelessWidget {
       trailing: DropdownButton<ReadDirection>(
         value: readSetting.landscapeReadDirection.value,
         elevation: 4,
-        onChanged: (ReadDirection? newValue) => readSetting.saveLandscapeReadDirection(newValue!),
-        items: ReadDirection.values.map((e) => DropdownMenuItem(child: Text(e.name.tr), value: e)).toList(),
+        onChanged: (ReadDirection? newValue) =>
+            readSetting.saveLandscapeReadDirection(newValue!),
+        items: ReadDirection.values
+            .map((e) => DropdownMenuItem(child: Text(e.name.tr), value: e))
+            .toList(),
       ).marginOnly(right: 12),
     );
   }
@@ -390,8 +485,11 @@ class SettingReadPage extends StatelessWidget {
       trailing: DropdownButton<ReadDirection>(
         value: readSetting.readDirection.value,
         elevation: 4,
-        onChanged: (ReadDirection? newValue) => readSetting.saveReadDirection(newValue!),
-        items: ReadDirection.values.map((e) => DropdownMenuItem(child: Text(e.name.tr), value: e)).toList(),
+        onChanged: (ReadDirection? newValue) =>
+            readSetting.saveReadDirection(newValue!),
+        items: ReadDirection.values
+            .map((e) => DropdownMenuItem(child: Text(e.name.tr), value: e))
+            .toList(),
       ).marginOnly(right: 12),
     );
   }
@@ -400,7 +498,9 @@ class SettingReadPage extends StatelessWidget {
     return ListTile(
       title: Text('notchOptimization'.tr),
       subtitle: Text('notchOptimizationHint'.tr),
-      trailing: Switch(value: readSetting.notchOptimization.value, onChanged: readSetting.saveNotchOptimization),
+      trailing: Switch(
+          value: readSetting.notchOptimization.value,
+          onChanged: readSetting.saveNotchOptimization),
     );
   }
 
@@ -415,7 +515,8 @@ class SettingReadPage extends StatelessWidget {
             child: TextField(
               controller: imageRegionWidthRatioController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(isDense: true, labelStyle: TextStyle(fontSize: 12)),
+              decoration: const InputDecoration(
+                  isDense: true, labelStyle: TextStyle(fontSize: 12)),
               textAlign: TextAlign.center,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
@@ -429,7 +530,8 @@ class SettingReadPage extends StatelessWidget {
           const Text('%'),
           IconButton(
             onPressed: _saveImageRegionWidthRatio,
-            icon: Icon(Icons.check, color: UIConfig.resumePauseButtonColor(context)),
+            icon: Icon(Icons.check,
+                color: UIConfig.resumePauseButtonColor(context)),
           ),
         ],
       ),
@@ -456,7 +558,8 @@ class SettingReadPage extends StatelessWidget {
             child: TextField(
               controller: portraitImageRegionWidthRatioController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(isDense: true, labelStyle: TextStyle(fontSize: 12)),
+              decoration: const InputDecoration(
+                  isDense: true, labelStyle: TextStyle(fontSize: 12)),
               textAlign: TextAlign.center,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
@@ -468,7 +571,8 @@ class SettingReadPage extends StatelessWidget {
           const Text('%'),
           IconButton(
             onPressed: _savePortraitImageRegionWidthRatio,
-            icon: Icon(Icons.check, color: UIConfig.resumePauseButtonColor(context)),
+            icon: Icon(Icons.check,
+                color: UIConfig.resumePauseButtonColor(context)),
           ),
         ],
       ),
@@ -476,7 +580,8 @@ class SettingReadPage extends StatelessWidget {
   }
 
   void _savePortraitImageRegionWidthRatio() {
-    int? value = int.tryParse(portraitImageRegionWidthRatioController.value.text);
+    int? value =
+        int.tryParse(portraitImageRegionWidthRatioController.value.text);
     if (value == null) {
       return;
     }
@@ -495,7 +600,8 @@ class SettingReadPage extends StatelessWidget {
             child: TextField(
               controller: landscapeImageRegionWidthRatioController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(isDense: true, labelStyle: TextStyle(fontSize: 12)),
+              decoration: const InputDecoration(
+                  isDense: true, labelStyle: TextStyle(fontSize: 12)),
               textAlign: TextAlign.center,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
@@ -507,7 +613,8 @@ class SettingReadPage extends StatelessWidget {
           const Text('%'),
           IconButton(
             onPressed: _saveLandscapeImageRegionWidthRatio,
-            icon: Icon(Icons.check, color: UIConfig.resumePauseButtonColor(context)),
+            icon: Icon(Icons.check,
+                color: UIConfig.resumePauseButtonColor(context)),
           ),
         ],
       ),
@@ -515,7 +622,8 @@ class SettingReadPage extends StatelessWidget {
   }
 
   void _saveLandscapeImageRegionWidthRatio() {
-    int? value = int.tryParse(landscapeImageRegionWidthRatioController.value.text);
+    int? value =
+        int.tryParse(landscapeImageRegionWidthRatioController.value.text);
     if (value == null) {
       return;
     }
@@ -569,21 +677,26 @@ class SettingReadPage extends StatelessWidget {
             nearestNav.widget.key != Get.keys[rightV2]) {
           nearestNav.push(
             PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) => const SettingKeyboardShortcutsPage(),
-                transitionsBuilder: preferenceSetting.enableSwipeBackGesture.isTrue && styleSetting.isInMobileLayout
-                    ? (context, animation, secondaryAnimation, child) =>
-                    SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(1, 0),
-                        end: Offset.zero,
-                      ).animate(CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeInOut,
-                      )),
-                      child: child,
-                    )
-                    : (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
-                transitionDuration: UIConfig.defaultPageRouteTransitionDuration),
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const SettingKeyboardShortcutsPage(),
+                transitionsBuilder:
+                    preferenceSetting.enableSwipeBackGesture.isTrue &&
+                            styleSetting.isInMobileLayout
+                        ? (context, animation, secondaryAnimation, child) =>
+                            SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              )),
+                              child: child,
+                            )
+                        : (context, animation, secondaryAnimation, child) =>
+                            FadeTransition(opacity: animation, child: child),
+                transitionDuration:
+                    UIConfig.defaultPageRouteTransitionDuration),
           );
         } else {
           toRoute(Routes.settingKeyboardShortcuts);
@@ -614,7 +727,9 @@ class SettingReadPage extends StatelessWidget {
               DropdownMenuItem(child: Text('10'), value: 10),
             ],
           ),
-          Text('ScreenHeight'.tr, style: UIConfig.settingPageListTileTrailingTextStyle(context)).marginSymmetric(horizontal: 12),
+          Text('ScreenHeight'.tr,
+                  style: UIConfig.settingPageListTileTrailingTextStyle(context))
+              .marginSymmetric(horizontal: 12),
         ],
       ),
     );
@@ -642,7 +757,9 @@ class SettingReadPage extends StatelessWidget {
               DropdownMenuItem(child: Text('10'), value: 10),
             ],
           ),
-          Text('ScreenHeight'.tr, style: UIConfig.settingPageListTileTrailingTextStyle(context)).marginSymmetric(horizontal: 12),
+          Text('ScreenHeight'.tr,
+                  style: UIConfig.settingPageListTileTrailingTextStyle(context))
+              .marginSymmetric(horizontal: 12),
         ],
       ),
     );
@@ -723,10 +840,13 @@ class SettingReadPage extends StatelessWidget {
         value: readSetting.autoModeStyle.value,
         elevation: 4,
         alignment: AlignmentDirectional.centerEnd,
-        onChanged: (AutoModeStyle? newValue) => readSetting.saveAutoModeStyle(newValue!),
+        onChanged: (AutoModeStyle? newValue) =>
+            readSetting.saveAutoModeStyle(newValue!),
         items: [
-          DropdownMenuItem(child: Text('scroll'.tr), value: AutoModeStyle.scroll),
-          DropdownMenuItem(child: Text('turnPage'.tr), value: AutoModeStyle.turnPage),
+          DropdownMenuItem(
+              child: Text('scroll'.tr), value: AutoModeStyle.scroll),
+          DropdownMenuItem(
+              child: Text('turnPage'.tr), value: AutoModeStyle.turnPage),
         ],
       ).marginOnly(right: 12),
     );
@@ -739,11 +859,14 @@ class SettingReadPage extends StatelessWidget {
       trailing: DropdownButton<TurnPageMode>(
         value: readSetting.turnPageMode.value,
         elevation: 4,
-        onChanged: (TurnPageMode? newValue) => readSetting.saveTurnPageMode(newValue!),
+        onChanged: (TurnPageMode? newValue) =>
+            readSetting.saveTurnPageMode(newValue!),
         items: [
           DropdownMenuItem(child: Text('image'.tr), value: TurnPageMode.image),
-          DropdownMenuItem(child: Text('screen'.tr), value: TurnPageMode.screen),
-          DropdownMenuItem(child: Text('adaptive'.tr), value: TurnPageMode.adaptive),
+          DropdownMenuItem(
+              child: Text('screen'.tr), value: TurnPageMode.screen),
+          DropdownMenuItem(
+              child: Text('adaptive'.tr), value: TurnPageMode.adaptive),
         ],
       ).marginOnly(right: 12),
     );

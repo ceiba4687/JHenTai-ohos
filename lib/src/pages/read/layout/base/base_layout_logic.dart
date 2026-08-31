@@ -25,6 +25,7 @@ import 'package:jhentai/src/setting/download_setting.dart';
 import 'package:jhentai/src/setting/style_setting.dart';
 import 'package:jhentai/src/setting/user_setting.dart';
 import 'package:jhentai/src/utils/permission_util.dart';
+import 'package:jhentai/src/utils/platform_util.dart';
 import 'package:jhentai/src/utils/string_uril.dart';
 import 'package:jhentai/src/utils/toast_util.dart';
 import 'package:jhentai/src/widget/eh_action_sheet_text.dart';
@@ -153,7 +154,8 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
       position: RelativeRect.fromLTRB(position.dx, position.dy, position.dx, position.dy),
       items: [
         PopupMenuItem(value: 'reload', child: Text('reload'.tr)),
-        PopupMenuItem(value: 'copyImage', child: Text('copyImage'.tr)),
+        if (JPlatform.supportsImageClipboard)
+          PopupMenuItem(value: 'copyImage', child: Text('copyImage'.tr)),
         PopupMenuItem(value: 'copy_eh_page_url', child: Text('copyEHPageUrl'.tr)),
         PopupMenuItem(value: 'save', child: Text('${'save'.tr}(${'resampleImage'.tr})')),
         if (readPageState.images[index]!.originalImageUrl != null && userSetting.hasLoggedIn())
@@ -204,13 +206,14 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
               shareOnlineImage(index);
             },
           ),
-          CupertinoActionSheetAction(
-            child: ehActionSheetText('copyImage'.tr),
-            onPressed: () async {
-              backRoute();
-              copyOnlineImage(index);
-            },
-          ),
+          if (JPlatform.supportsImageClipboard)
+            CupertinoActionSheetAction(
+              child: ehActionSheetText('copyImage'.tr),
+              onPressed: () async {
+                backRoute();
+                copyOnlineImage(index);
+              },
+            ),
           CupertinoActionSheetAction(
             child: ehActionSheetText('copyEHPageUrl'.tr),
             onPressed: () async {
@@ -293,13 +296,14 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
               shareDownloadedImageFile(index);
             },
           ),
-          CupertinoActionSheetAction(
-            child: ehActionSheetText('copyImage'.tr),
-            onPressed: () {
-              backRoute();
-              copyDownloadedImageFile(index);
-            },
-          ),
+          if (JPlatform.supportsImageClipboard)
+            CupertinoActionSheetAction(
+              child: ehActionSheetText('copyImage'.tr),
+              onPressed: () {
+                backRoute();
+                copyDownloadedImageFile(index);
+              },
+            ),
           CupertinoActionSheetAction(
             child: ehActionSheetText('copyEHPageUrl'.tr),
             onPressed: () async {
@@ -344,13 +348,14 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
               shareArchiveImageFile(index);
             },
           ),
-          CupertinoActionSheetAction(
-            child: ehActionSheetText('copyImage'.tr),
-            onPressed: () {
-              backRoute();
-              copyArchiveImageFile(index);
-            },
-          ),
+          if (JPlatform.supportsImageClipboard)
+            CupertinoActionSheetAction(
+              child: ehActionSheetText('copyImage'.tr),
+              onPressed: () {
+                backRoute();
+                copyArchiveImageFile(index);
+              },
+            ),
           CupertinoActionSheetAction(
             child: ehActionSheetText('save'.tr),
             onPressed: () {
@@ -379,7 +384,8 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
       popUpAnimationStyle: AnimationStyle.noAnimation,
       position: RelativeRect.fromLTRB(position.dx, position.dy, position.dx, position.dy),
       items: [
-        PopupMenuItem(value: 'copyImage', child: Text('copyImage'.tr)),
+        if (JPlatform.supportsImageClipboard)
+          PopupMenuItem(value: 'copyImage', child: Text('copyImage'.tr)),
         PopupMenuItem(value: 'copy_eh_page_url', child: Text('copyEHPageUrl'.tr)),
         PopupMenuItem(value: 'save', child: Text('save'.tr)),
         PopupMenuItem(value: 'redownload', child: Text('reDownload'.tr)),
@@ -421,7 +427,8 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
       popUpAnimationStyle: AnimationStyle.noAnimation,
       position: RelativeRect.fromLTRB(position.dx, position.dy, position.dx, position.dy),
       items: [
-        PopupMenuItem(value: 'copyImage', child: Text('copyImage'.tr)),
+        if (JPlatform.supportsImageClipboard)
+          PopupMenuItem(value: 'copyImage', child: Text('copyImage'.tr)),
         PopupMenuItem(value: 'save', child: Text('save'.tr)),
         PopupMenuItem(value: 'open_read_setting', child: Text('setting'.tr)),
       ],
@@ -485,6 +492,10 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
   /// On desktop: writes image to temp file then uses [Pasteboard.writeFiles].
   /// On mobile: uses [Pasteboard.writeImage] with raw bytes.
   Future<void> copyOnlineImage(int index) async {
+    if (!JPlatform.supportsImageClipboard) {
+      return;
+    }
+
     if (readPageState.images[index] == null) {
       return;
     }
@@ -520,6 +531,10 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
 
   /// Copy a downloaded-mode image file to clipboard.
   void copyDownloadedImageFile(int index) {
+    if (!JPlatform.supportsImageClipboard) {
+      return;
+    }
+
     if (GetPlatform.isDesktop) {
       Pasteboard.writeFiles([_getDownloadedImageAbsolutePath(index)]).then((_) => toast('hasCopiedToClipboard'.tr));
     } else {
@@ -529,6 +544,10 @@ abstract class BaseLayoutLogic extends GetxController with GetTickerProviderStat
 
   /// Copy an archive-mode image file to clipboard.
   void copyArchiveImageFile(int index) {
+    if (!JPlatform.supportsImageClipboard) {
+      return;
+    }
+
     if (GetPlatform.isDesktop) {
       Pasteboard.writeFiles([_getArchiveImageAbsolutePath(index)]).then((_) => toast('hasCopiedToClipboard'.tr));
     } else {

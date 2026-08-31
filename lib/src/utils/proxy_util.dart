@@ -6,6 +6,7 @@ import 'package:jhentai/src/utils/string_uril.dart';
 import 'package:system_network_proxy/system_network_proxy.dart';
 
 import '../setting/network_setting.dart';
+import 'platform_util.dart';
 
 Future<String> getSystemProxyAddress() async {
   String systemProxyAddress = '';
@@ -14,7 +15,7 @@ Future<String> getSystemProxyAddress() async {
     SystemNetworkProxy.init();
     systemProxyAddress = await SystemNetworkProxy.getProxyServer();
   }
-  if (GetPlatform.isMobile) {
+  if (JPlatform.isMobile) {
     HttpProxy httpProxy = await HttpProxy.createHttpProxy();
     if (!isEmptyOrNull(httpProxy.host) && !isEmptyOrNull(httpProxy.port)) {
       systemProxyAddress = '${httpProxy.host}:${httpProxy.port}';
@@ -25,13 +26,16 @@ Future<String> getSystemProxyAddress() async {
   return systemProxyAddress;
 }
 
-Future<String Function(Uri)> findProxySettingFunc(ValueGetter<String> systemProxyAddress) async {
+Future<String Function(Uri)> findProxySettingFunc(
+    ValueGetter<String> systemProxyAddress) async {
   String configProxyAddress() {
     String configAddress;
-    if (isEmptyOrNull(networkSetting.proxyUsername.value?.trim()) && isEmptyOrNull(networkSetting.proxyPassword.value?.trim())) {
+    if (isEmptyOrNull(networkSetting.proxyUsername.value?.trim()) &&
+        isEmptyOrNull(networkSetting.proxyPassword.value?.trim())) {
       configAddress = networkSetting.proxyAddress.value;
     } else {
-      configAddress = '${networkSetting.proxyUsername.value ?? ''}:${networkSetting.proxyPassword.value ?? ''}@${networkSetting.proxyAddress.value}';
+      configAddress =
+          '${networkSetting.proxyUsername.value ?? ''}:${networkSetting.proxyPassword.value ?? ''}@${networkSetting.proxyAddress.value}';
     }
     return configAddress;
   }
@@ -39,7 +43,9 @@ Future<String Function(Uri)> findProxySettingFunc(ValueGetter<String> systemProx
   return (_) {
     switch (networkSetting.proxyType.value) {
       case JProxyType.system:
-        return isEmptyOrNull(systemProxyAddress.call()) ? 'DIRECT' : 'PROXY ${systemProxyAddress.call()}; DIRECT';
+        return isEmptyOrNull(systemProxyAddress.call())
+            ? 'DIRECT'
+            : 'PROXY ${systemProxyAddress.call()}; DIRECT';
       case JProxyType.http:
         return 'PROXY ${configProxyAddress()}; DIRECT';
       case JProxyType.socks5:

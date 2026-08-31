@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:file_picker_ohos/file_picker_ohos.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +15,7 @@ import 'package:jhentai/src/service/cloud_service.dart';
 import 'package:jhentai/src/setting/advanced_setting.dart';
 import 'package:jhentai/src/service/path_service.dart';
 import 'package:jhentai/src/service/log.dart';
+import 'package:jhentai/src/utils/platform_util.dart';
 import 'package:jhentai/src/utils/toast_util.dart';
 import 'package:jhentai/src/widget/loading_state_indicator.dart';
 import 'package:path/path.dart';
@@ -62,7 +63,8 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
           padding: const EdgeInsets.only(top: 16),
           children: [
             _buildEnableLogging(),
-            if (advancedSetting.enableLogging.isTrue) _buildRecordAllLogs().fadeIn(),
+            if (advancedSetting.enableLogging.isTrue)
+              _buildRecordAllLogs().fadeIn(),
             _buildOpenLogs(),
             _buildClearLogs(context),
             _buildClearImageCache(context),
@@ -85,7 +87,9 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
     return ListTile(
       title: Text('enableLogging'.tr),
       subtitle: Text('needRestart'.tr),
-      trailing: Switch(value: advancedSetting.enableLogging.value, onChanged: advancedSetting.saveEnableLogging),
+      trailing: Switch(
+          value: advancedSetting.enableLogging.value,
+          onChanged: advancedSetting.saveEnableLogging),
     );
   }
 
@@ -118,7 +122,9 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
             useCupertinoIndicator: true,
             successWidgetBuilder: () => Text(
               _logSize,
-              style: TextStyle(color: UIConfig.resumePauseButtonColor(context), fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  color: UIConfig.resumePauseButtonColor(context),
+                  fontWeight: FontWeight.w500),
             ),
             errorTapCallback: _loadingLogSize,
           ).marginOnly(right: 8)
@@ -140,7 +146,9 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
             useCupertinoIndicator: true,
             successWidgetBuilder: () => Text(
               _imageCacheSize,
-              style: TextStyle(color: UIConfig.resumePauseButtonColor(context), fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  color: UIConfig.resumePauseButtonColor(context),
+                  fontWeight: FontWeight.w500),
             ),
             errorTapCallback: _getImagesCacheSize,
           ).marginOnly(right: 8)
@@ -305,7 +313,10 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
           if (!cacheImagesDirectory.existsSync()) {
             totalBytes = 0;
           } else {
-            totalBytes = cacheImagesDirectory.listSync().fold<int>(0, (previousValue, element) => previousValue += (element as File).lengthSync());
+            totalBytes = cacheImagesDirectory.listSync().fold<int>(
+                0,
+                (previousValue, element) =>
+                    previousValue += (element as File).lengthSync());
           }
 
           return byte2String(totalBytes.toDouble());
@@ -363,7 +374,8 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
 
     try {
       List list = await isolateService.jsonDecodeAsync(string);
-      List<CloudConfig> configs = list.map((e) => CloudConfig.fromJson(e)).toList();
+      List<CloudConfig> configs =
+          list.map((e) => CloudConfig.fromJson(e)).toList();
       for (CloudConfig config in configs) {
         await cloudConfigService.importConfig(config);
       }
@@ -387,15 +399,17 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
       return;
     }
 
-    String fileName = '${CloudConfigService.configFileName}-${DateFormat('yyyyMMddHHmmss').format(DateTime.now())}.json';
-    if (GetPlatform.isMobile) {
+    String fileName =
+        '${CloudConfigService.configFileName}-${DateFormat('yyyyMMddHHmmss').format(DateTime.now())}.json';
+    if (JPlatform.isMobile) {
       return _exportDataMobile(fileName, result);
     } else {
       return _exportDataDesktop(fileName, result);
     }
   }
 
-  Future<void> _exportDataMobile(String fileName, List<CloudConfigTypeEnum>? result) async {
+  Future<void> _exportDataMobile(
+      String fileName, List<CloudConfigTypeEnum>? result) async {
     if (_exportDataLoadingState == LoadingState.loading) {
       return;
     }
@@ -429,7 +443,8 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
     }
   }
 
-  Future<void> _exportDataDesktop(String fileName, List<CloudConfigTypeEnum>? result) async {
+  Future<void> _exportDataDesktop(
+      String fileName, List<CloudConfigTypeEnum>? result) async {
     if (_exportDataLoadingState == LoadingState.loading) {
       return;
     }
@@ -467,7 +482,8 @@ class _SettingAdvancedPageState extends State<SettingAdvancedPage> {
       if (await file.exists()) {
         await file.create(recursive: true);
       }
-      await file.writeAsString(await isolateService.jsonEncodeAsync(uploadConfigs));
+      await file
+          .writeAsString(await isolateService.jsonEncodeAsync(uploadConfigs));
       log.info('Export data to $savedPath success');
       toast('success'.tr);
       setStateSafely(() => _exportDataLoadingState = LoadingState.success);

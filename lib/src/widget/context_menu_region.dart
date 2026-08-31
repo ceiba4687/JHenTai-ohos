@@ -39,6 +39,8 @@ class _ContextMenuRegionState extends State<ContextMenuRegion> {
       case TargetPlatform.linux:
       case TargetPlatform.windows:
         return false;
+      default:
+        return defaultTargetPlatform.name == 'ohos';
     }
   }
 

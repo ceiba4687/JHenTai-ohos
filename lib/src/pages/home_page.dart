@@ -13,6 +13,7 @@ import 'package:jhentai/src/pages/layout/tablet_v2/tablet_layout_page_v2.dart';
 import 'package:jhentai/src/setting/style_setting.dart';
 import 'package:jhentai/src/setting/user_setting.dart';
 import 'package:jhentai/src/service/log.dart';
+import 'package:jhentai/src/utils/platform_util.dart';
 import 'package:jhentai/src/utils/toast_util.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:window_manager/window_manager.dart';
@@ -99,7 +100,7 @@ class _HomePageState extends State<HomePage> with LoginRequiredMixin, WindowList
 
   /// Listen to share or open urls/text coming from outside the app while the app is in the memory or is closed
   void _initSharingIntent() {
-    if (!GetPlatform.isAndroid) {
+    if (!GetPlatform.isAndroid && !JPlatform.isOhos) {
       return;
     }
 

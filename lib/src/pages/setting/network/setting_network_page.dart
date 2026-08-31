@@ -44,11 +44,13 @@ class SettingNetworkPage extends StatelessWidget {
   }
 
   Widget _buildEnableDomainFronting() {
-    return SwitchListTile(
-      title: Text('enableDomainFronting'.tr),
-      subtitle: Text('bypassSNIBlocking'.tr),
-      value: networkSetting.enableDomainFronting.value,
-      onChanged: networkSetting.saveEnableDomainFronting,
+    return Obx(
+      () => SwitchListTile(
+        title: Text('enableDomainFronting'.tr),
+        subtitle: Text('bypassSNIBlocking'.tr),
+        value: networkSetting.enableDomainFronting.value,
+        onChanged: networkSetting.saveEnableDomainFronting,
+      ),
     );
   }
 

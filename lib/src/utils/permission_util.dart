@@ -2,12 +2,17 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
+import 'package:jhentai/src/utils/platform_util.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../service/log.dart';
 
 Future<void> requestStoragePermission() async {
+  if (JPlatform.isOhos) {
+    return;
+  }
+
   if (!GetPlatform.isMacOS && !GetPlatform.isLinux) {
     try {
       await Permission.manageExternalStorage.request().isGranted;
@@ -46,6 +51,11 @@ enum MediaType {
 }
 
 Future<List<PermissionStatus>> checkAndRequestPermissions({MediaType mediaType = MediaType.image}) async {
+  if (JPlatform.isOhos) {
+    // SaverGallery uses the system asset-creation dialog on HarmonyOS.
+    return [PermissionStatus.granted];
+  }
+
   if (!Platform.isAndroid && !Platform.isIOS) {
     // Only Android and iOS platforms are supported
     return [PermissionStatus.denied];

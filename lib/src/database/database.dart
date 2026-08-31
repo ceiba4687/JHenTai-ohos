@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io' as io;
 import 'dart:io';
 
@@ -28,7 +29,9 @@ import 'package:jhentai/src/exception/upload_exception.dart';
 import 'package:jhentai/src/extension/directory_extension.dart';
 import 'package:jhentai/src/service/log.dart';
 import 'package:jhentai/src/service/path_service.dart';
+import 'package:jhentai/src/utils/platform_util.dart';
 import 'package:path/path.dart';
+import 'package:sqlite3/open.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
@@ -450,6 +453,10 @@ LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final file = io.File(join(pathService.getVisibleDir().path, 'db.sqlite'));
 
+    if (JPlatform.isOhos) {
+      open.overrideForAll(_openOhosSqlite);
+    }
+
     if (Platform.isAndroid) {
       await applyWorkaroundToOpenSqlite3OnOldAndroidVersions();
     }
@@ -459,6 +466,8 @@ LazyDatabase _openConnection() {
     return NativeDatabase(file);
   });
 }
+
+DynamicLibrary _openOhosSqlite() => DynamicLibrary.open('libsqlite3.so');
 
 AppDb appDb = AppDb();
 

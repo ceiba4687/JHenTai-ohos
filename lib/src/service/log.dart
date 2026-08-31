@@ -24,6 +24,7 @@ class LogService with JHLifeCircleBeanErrorCatch implements JHLifeCircleBean {
   Logger? _verboseFileLogger;
   Logger? _warningFileLogger;
   Logger? _downloadFileLogger;
+  Future<void>? _logDirInitialization;
 
   LogPrinter devPrinter = PrettyPrinter(stackTraceBeginIndex: 0, methodCount: 6, levelEmojis: {Level.trace: '✔ '});
   LogPrinter prodPrinterWithBox = PrettyPrinter(stackTraceBeginIndex: 0, methodCount: 6, colors: false, printTime: true, levelEmojis: {Level.trace: '✔ '});
@@ -131,13 +132,13 @@ class LogService with JHLifeCircleBeanErrorCatch implements JHLifeCircleBean {
     }
   }
 
-  Future<void> _initLogDir() async {
-    if (logDirPath == null) {
-      logDirPath = path.join(pathService.getVisibleDir().path, 'logs');
-      if (!await Directory(logDirPath!).exists()) {
-        await Directory(logDirPath!).create();
-      }
-    }
+  Future<void> _initLogDir() {
+    return _logDirInitialization ??= _createLogDir();
+  }
+
+  Future<void> _createLogDir() async {
+    logDirPath ??= path.join(pathService.getVisibleDir().path, 'logs');
+    await Directory(logDirPath!).create(recursive: true);
   }
 
   Future<void> _initLogger() async {

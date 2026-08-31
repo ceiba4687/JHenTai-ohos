@@ -1,222 +1,84 @@
-![platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Windows%20%7C%20MacOS%20%7C%20Linux-brightgreen)
-![last-commit](https://img.shields.io/github/last-commit/jiangtian616/JHenTai)
-[![downloads](https://img.shields.io/github/downloads/jiangtian616/JHenTai/total)](https://github.com/jiangtian616/JHenTai/releases)
-[![downloads](https://img.shields.io/github/downloads/jiangtian616/JHenTai/latest/total)](https://github.com/jiangtian616/JHenTai/releases)
-![star](https://img.shields.io/github/stars/jiangtian616/JHenTai)
-[![issue](https://img.shields.io/badge/chat-issue-brightgreen)](https://github.com/jiangtian616/JHenTai/issues/new)
-[![telegram](https://img.shields.io/badge/chat-telegram(Chinese_Mainly)-brightgreen)](https://t.me/+PindoE9yvIpmOWI9)
+<img src="./android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" alt="JHenTai-ohos logo" width="144" height="144" align="right" />
 
-# JHenTai
+# JHenTai-ohos
 
-English | [简体中文](https://github.com/jiangtian616/JHenTai/blob/master/README_cn.md) | [한국어](https://github.com/jiangtian616/JHenTai/blob/master/README_kr.md)
+[JHenTai](https://github.com/jiangtian616/JHenTai) 的 HarmonyOS / OpenHarmony 移植版。
 
-[Q&A](https://github.com/jiangtian616/JHenTai/wiki/Common-Questions)
+本仓库专注于原生 HarmonyOS HAP 构建；Android、iOS、Windows、macOS 和 Linux
+版本请前往[上游项目](https://github.com/jiangtian616/JHenTai)。
 
-## Description
+## 下载
 
-A manga app for E-Hentai, supporting Android & iOS & Windows & MacOS & Linux.
+从 [GitHub Releases](https://github.com/ceiba4687/JHenTai-ohos/releases) 下载最新的
+`JHenTai-ohos-*-unsigned.hap`。
 
-Still in development stage, welcome to submit issues or feature requests.
+Release 仅提供未签名 HAP。安装前需要使用安装者自己的 HarmonyOS 证书完成签名；
+仓库和 Release 不分发签名证书或私钥。
 
-## Download & Install
+- 目标系统：HarmonyOS 7 / API 26
+- 最低兼容版本：HarmonyOS 5.1 / API 18
+- 发布架构：`ohos-arm64`
+- 应用显示名：`JHenTai`
+- Bundle ID：`top.jtmonster.jhentai.ohos`
 
-[<img src="https://raw.githubusercontent.com/jiangtian616/JHenTai/master/badges/download_from_github.png" 
-      alt="Download from GitHub" 
-      height="60">](https://github.com/jiangtian616/JHenTai/releases)
-[<img src="https://raw.githubusercontent.com/jiangtian616/JHenTai/master/badges/get_it_on_obtainium.png" 
-      alt="Get it on Obtainium" 
-      height="60">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22top.jtmonster.jhentai%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fjiangtian616%2FJHenTai%22%2C%22author%22%3A%22jiangtian616%22%2C%22name%22%3A%22JHenTai%22%2C%22preferredApkIndex%22%3A0%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%2C%5C%22fallbackToOlderReleases%5C%22%3Atrue%2C%5C%22filterReleaseTitlesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22filterReleaseNotesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22verifyLatestTag%5C%22%3Afalse%2C%5C%22sortMethodChoice%5C%22%3A%5C%22date%5C%22%2C%5C%22useLatestAssetDateAsReleaseDate%5C%22%3Afalse%2C%5C%22releaseTitleAsVersion%5C%22%3Afalse%2C%5C%22trackOnly%5C%22%3Afalse%2C%5C%22versionExtractionRegEx%5C%22%3A%5C%22v(.*)%5C%22%2C%5C%22matchGroupToUse%5C%22%3A%5C%22%241%5C%22%2C%5C%22versionDetection%5C%22%3Atrue%2C%5C%22releaseDateAsVersion%5C%22%3Afalse%2C%5C%22useVersionCodeAsOSVersion%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22invertAPKFilter%5C%22%3Afalse%2C%5C%22autoApkFilterByArch%5C%22%3Atrue%2C%5C%22appName%5C%22%3A%5C%22JHenTai%5C%22%2C%5C%22appAuthor%5C%22%3A%5C%22JTMonster%5C%22%2C%5C%22shizukuPretendToBeGooglePlay%5C%22%3Afalse%2C%5C%22allowInsecure%5C%22%3Afalse%2C%5C%22exemptFromBackgroundUpdates%5C%22%3Afalse%2C%5C%22skipUpdateNotifications%5C%22%3Afalse%2C%5C%22about%5C%22%3A%5C%22https%3A%2F%2Fgithub.com%2Fjiangtian616%2FJHenTai%2Fblob%2Fmaster%2FREADME.md%5C%22%2C%5C%22refreshBeforeDownload%5C%22%3Afalse%7D%22%2C%22overrideSource%22%3Anull%7D)
+鸿蒙版使用独立 Bundle ID，可与卓易通中的 Android 版 JHenTai 同时安装。
 
-[<img src="https://raw.githubusercontent.com/jiangtian616/JHenTai/master/badges/add_to_altstore.png" 
-      alt="Add to AltStore" 
-      height="60">](https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://raw.githubusercontent.com/jiangtian616/JHenTai/refs/heads/master/altsource/AltSource.json)
-[<img src="https://raw.githubusercontent.com/jiangtian616/JHenTai/master/badges/add_to_sidestore.png" 
-      alt="Add to SideStore" 
-      height="60">](https://intradeus.github.io/http-protocol-redirector?r=sidestore://source?url=https://raw.githubusercontent.com/jiangtian616/JHenTai/refs/heads/master/altsource/AltSource.json)
-[<img src="https://raw.githubusercontent.com/jiangtian616/JHenTai/master/badges/add_to_feather.png" 
-      alt="Add to Feather" 
-      height="60">](https://intradeus.github.io/http-protocol-redirector?r=feather://source/https://raw.githubusercontent.com/jiangtian616/JHenTai/refs/heads/master/altsource/AltSource.json)
+## 当前状态
 
-Install for Android: download .apk according to your device architecture and install.
+已在 HarmonyOS 7 / API 26 模拟器及真机上验证：
 
-- arm64-v8a：Suitable for Android phones with 8th generation ARM processor(common choice)
-- armeabiv-v7a：Suitable for Android phones with 7th generation ARM processor
-- x86_64：rare
+- 应用启动、数据库初始化与基础设置
+- E-Hentai / EXHentai 登录及画廊浏览
+- 域名前置、系统代理与应用内代理配置
+- 在线阅读、音量键翻页、下载及离线阅读
+- 收藏、历史记录与下载进度持久化
+- 系统分享与图片保存到图库
+- 本地画廊路径选择器启动及生物识别能力检测
 
-Install for iOS: download .ipa, then use [AltStore](https://altstore.io) or SideLoadly to sign.
+平台差异及尚需真机覆盖的边界场景见
+[HarmonyOS 开发说明](./docs/ohos.md#platform-limitations)。
 
-- You can get easier installation and updates by adding [AltStore Repo](https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://raw.githubusercontent.com/jiangtian616/JHenTai/refs/heads/master/altsource/AltSource.json)
+## 编译
 
-Install for Windows: download Windows_xxx.zip, then unpack it.
+### 环境
 
-- If you use a proxy server, set proxy address at network setting page.
-- If you're using Windows 11 and can't launch app, try to run jhentai.exe in compatibility mode.
-- If it's blocked by Windows Defender, Please trust it.
+- DevEco Studio 及 HarmonyOS 7 / API 26 SDK
+- [CPF-Flutter](https://gitcode.com/CPF-Flutter/flutter_flutter)
+  `3.44.9+ohos-0.0.1-canary1`
+- PowerShell 7（推荐）
 
-Install for MacOS(No maintenance): download .dmg.
+默认工具路径和可覆盖的环境变量记录在
+[docs/ohos.md](./docs/ohos.md)。
 
-- Trust it in system setting.
-- If you use a proxy server, set proxy address at network setting page.
+### 命令
 
-Install for Linux(No maintenance): download Linux-amd64.deb or Linux-x86_64.AppImage due to your platform, then install
-or execute it (You may need to install webkit2gtk-4.1).
+```powershell
+git clone https://github.com/ceiba4687/JHenTai-ohos.git
+Set-Location JHenTai-ohos
 
-Fedora-based dnf linux distro:
-
-```bash
-sudo rpm --import https://meeks233.github.io/Jhentai-rpm/fedora/RPM-GPG-KEY-jhentai
-sudo curl -fsSL -o /etc/yum.repos.d/jhentai.repo https://meeks233.github.io/Jhentai-rpm/fedora/jhentai.repo
-sudo dnf install -y jhentai
+.\tool\flutter-ohos.ps1 doctor -v
+.\tool\flutter-ohos.ps1 pub get
+.\tool\flutter-ohos.ps1 analyze --no-pub
+.\tool\flutter-ohos.ps1 test --no-pub
+.\tool\build-ohos.ps1 -Mode release -NoCodesign
 ```
 
+若 GitHub 依赖下载较慢，可仅为当前终端配置代理：
 
-- If you use a proxy server, set proxy address at network setting page.
+```powershell
+$env:JHENTAI_GIT_PROXY = 'http://127.0.0.1:4787'
+.\tool\flutter-ohos.ps1 pub get
+```
 
-## Update
+可安装的 HAP 需要由安装者在 DevEco Studio 中配置签名。详细工具链、插件来源、签名和
+设备验证信息见 [HarmonyOS 开发说明](./docs/ohos.md)。
 
-Update for Android: download .apk according to your device architecture and install.
+## 致谢
 
-Update for iOS: download .ipa, then use [AltStore](https://altstore.io) or SideLoadly to sign.
+- [jiangtian616/JHenTai](https://github.com/jiangtian616/JHenTai) 及其贡献者
+- [CPF-Flutter](https://gitcode.com/CPF-Flutter/flutter_flutter) 鸿蒙 Flutter 适配
+- [bgli100/pixez-flutter-ohos](https://github.com/bgli100/pixez-flutter-ohos) 的移植与发布结构参考
 
-Update for Windows: Delete old unpacked directory directly, then download latest Windows_xxx.zip, unpack it.
+## 许可证
 
-Update for MacOS(No maintenance): download .dmg.
-
-Update for Linux(No maintenance): Delete old and download the latest product.
-
-## Help With Translation
-
-Please submit a PR if you want to help with translation.
-
-[steps](https://github.com/jiangtian616/JHenTai#Translation)
-
-## Develop Motivation
-
-My first project With Flutter. I aim at getting familiar with Flutter during development. Devices I use include Android
-phone, Ipad and Windows computer. E-hentai apps I used before have several bugs, and I don't understand source code
-because I have no development
-experience with Android or ios, so I choose JHenTai to become my first Flutter Project.
-
-2022.08.20 After five months of development, JHenTai has gradually become more and more strong, and I have completely
-refactored some codes for gallery page, reading page, download, etc.
-which are written at the beginning stage. I tried my best to extract the commonality between different page and style to
-reduce coupling,
-in order to benefit the development of new features. I would be very grateful if any kind of you could give me some
-advice on coding style,
-design patterns and anything related to Flutter development or participate in the development of JHenTai.
-
-2022.10.29 I have been more familiar with basic Flutter development, and I'll focus on another area from now on.
-So updates for JHenTai will be less than previous, but I'll still handle bugs or issues in time。
-
-## References & Thanks
-
-Layout and style references:
-
-- [FEhviewer](https://github.com/honjow/FEhViewer) : Mainly
-- [EHPanda](https://github.com/tatsuz0u/EhPanda)
-- [EHViewer](https://gitlab.com/NekoInverter/EhViewer)
-
-Tag translation:
-
-- [EhTagTranslation](https://github.com/EhTagTranslation/Database)
-
-Tag order optimization:
-
-- [e-hentai-db](https://github.com/ccloli/e-hentai-db)
-- [e-hentai-tag-count](https://github.com/mokurin000/e-hentai-tag-count)
-- [EhSyringe](https://github.com/EhTagTranslation/EhSyringe)
-
-App translation：
-
-- [andyching168](https://github.com/andyching168) [kenny03211](https://github.com/kenny03211) [NeKoOuO](https://github.com/NeKoOuO) 繁體中文(台灣)
-- [lucas-04](https://github.com/lucas-04) Português brasileiro
-- [qlife1146](https://github.com/qlife1146) 한국어
-- [bropines](https://github.com/bropines) Russian
-
-mush thanks to these projects and people🙇‍
-
-## Screenshots
-
-### Mobile Layout
-
-<img width="250" src="screenshot/mobile_v2.jpg"/>
-
-### Tablet Layout
-
-<img width="770" src="screenshot/tabletV2.png"/>
-
-### Desktop Layout
-
-<img width="770" src="screenshot/desktop1.png"/>
-
-### Gallery & Search
-
-<img width="250" style="margin-right:10px" src="screenshot/mobile_v2.jpg"/><img width="250" style="margin-right:10px" src="screenshot/search.jpg"/> 
-
-### Gallery Detail
-
-<img width="250" src="screenshot/detail.png" style="margin-right:10px" /><img width="250" src="screenshot/archive.jpg" style="margin-right:10px" />
-
-### Setting & Download
-
-<img width="270" src="screenshot/setting_en.jpg" style="margin-right:10px" /><img width="250" src="screenshot/download.jpg" style="margin-right:10px" />
-
-### Read
-
-<img width="250" src="screenshot/read.jpg" /><img src="screenshot/read_double_column.png" /><img src="screenshot/read_continuous_scroll.png" />
-
-## Main Features
-
--   [x] Mobile, tablet, desktop layout(3 kinds)
--   [x] Vertical, horizontal, double column read page layout(4 kinds)
--   [x] GalleryPage, Popular, Favorite, Watched, History, support multiple gallery list style
--   [x] search, search suggestion, tap tag to search, file search, jump to a certain page
--   [x] online reading and download, support restore download task, support synchronize updates after the uploader has
-    uploaded a new version
--   [x] archive download and automatic unpacking and reading
--   [x] support loading local images and read
--   [x] support assign priority to download task manually
--   [x] support assign group to gallery and archive
--   [x] favorite, rating, torrent, archive, statistics, share
--   [x] password login, Cookie login, web login
--   [x] support EX site(domain fronting optional)
--   [x] vote for Tag, watch and hidden tags
--   [x] comment, vote for comment
--   [x] Fingerprint unlock
-
-## Translation
-
-> [languageCode](https://github.com/unicode-org/cldr/blob/master/common/validity/language.xml)
->
-> [countryCode](https://github.com/unicode-org/cldr/blob/master/common/validity/region.xml)
-
-1. Copy `/lib/src/l18n/en_US.dart ` and rename to `{your_languageCode}_{your_countryCode}.dart`
-2. Rename classname in new file(optional)
-3. Modify k-v pairs in method `keys` ,translate values to your language
-
-Now you can submit your PR, I'll do the remaining things. Or you can go on with:
-
-4. Enter `/lib/src/l18n/locale_text.dart ` , add a new k-v pair in method `keys`
-   => `{your_languageCode}_{your_countryCode} : {your_className}.keys()`
-5. Enter `/lib/src/consts/locale_consts.dart`, add a new k-v pair in
-   property `localeCode2Description`: `{your_languageCode}_{your_countryCode} : {languageDescription}` to describe your
-   language.
-
-## About compiling
-
-1. You need to manage your Android signing by yourself,
-   check https://docs.flutter.dev/deployment/android#signing-the-app
-2. Just run this project via IDEA or VSCode simply.
-
-## About code contribution
-
-1. There is no fixed requirement for branch names. You can make changes on your local master branch and submit a PR.
-2. For changes that are large in scope or involve interactions between multiple modules, code submitted via Vibe Coding by developers without code review capability will not be accepted. Such code often fails to follow the project's existing coding conventions, is harmful to code extensibility, and its correctness cannot be guaranteed.
-3. A single PR should focus on the minimal feature scope. If multiple features are involved, please submit separate PRs.
-
-## Main Dart Dependencies
-
-- [get](https://pub.flutter-io.cn/packages/get): dependency management, state management, l18n, NoSQL
-- [dio](https://pub.flutter-io.cn/packages?q=dio): network
-- [extendedImage](https://pub.flutter-io.cn/packages/extended_image): image
-- [drift](https://pub.flutter-io.cn/packages/drift): database
+本项目继承上游项目的 [Apache License 2.0](./LICENSE)。
