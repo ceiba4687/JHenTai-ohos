@@ -116,19 +116,44 @@ other apps. Saving images uses the HarmonyOS asset-creation dialog supplied by
 
 ## Verified output
 
-The unsigned debug build is produced at:
+The unsigned debug or release build is produced at:
 
 ```text
 build\ohos\hap\entry-default-unsigned.hap
 ```
 
 Inspecting the packaged `module.json` should report bundle
-`top.jtmonster.jhentai.ohos`, version `8.0.14` (`332`), compile SDK
+`top.jtmonster.jhentai.ohos`, version `8.0.16` (`333`), compile SDK
 `26.0.0.105`, target API 26, and minimum API 18.
 
 The HarmonyOS bundle name intentionally has the `.ohos` suffix. The Android
 application keeps `top.jtmonster.jhentai`, allowing the native HarmonyOS build
 and the Android build in ZhuoyiTong to be installed at the same time.
+
+## Upstream 8.0.16 sync
+
+Merged upstream through `486c29422d220e7d4541b7b057ecda7895353e80`
+(`8.0.16+333`). The pinned Flutter OH SDK, plugin revisions, and independent
+HarmonyOS bundle name are retained.
+
+The new tag editor scrolls in short windows, including landscape bottom sheets
+and tablet dialogs. Resetting a custom tag color now restores the inherited
+color when the edit is confirmed.
+
+Validation on 2026-09-05:
+
+- All 10 Flutter tests pass, including OHOS tag editing, color reset, landscape
+  layouts, network-setting updates, volume events, and bundle identity.
+- Static analysis reports 0 errors and 73 existing warnings, compared with
+  0 errors and 74 warnings before the merge. No new warnings were introduced;
+  `flutter analyze` still exits nonzero because of the existing diagnostics.
+- The unsigned `ohos-arm64` release HAP builds successfully. Its packaged
+  metadata reports `8.0.16` (`333`), release mode, target API 26, and minimum
+  API 18. All 19 OHOS plugins remain registered, and the HAP includes the arm64
+  Flutter engine, application, and SQLite libraries.
+
+The device checks below were performed on 8.0.14. This sync has been verified
+with tests and a release build; device smoke testing of 8.0.16 is still pending.
 
 ## Emulator verification
 

@@ -202,7 +202,8 @@ class zh_CN {
       'blockUploaderLocally': '本地屏蔽上传者',
       'blockTitleLocally': '本地屏蔽已选中标题',
       'blockRuleAlreadyExists': '该规则已存在',
-      'block': '屏蔽',
+      'blockThisGallery': '屏蔽该画廊',
+      'blockGallerySuccess': '已屏蔽该画廊，可在 偏好设置-屏蔽规则 中修改',
 
       /// detail dialog
       'galleryUrl': '画廊链接',
@@ -264,7 +265,8 @@ class zh_CN {
       'advancedSetting': '高级设置',
       'refreshRate': '刷新率',
       'refreshRateCurrent': '当前',
-      'refreshRateHint': '立即生效。「自动」将跟随系统默认设置。',
+      'refreshRateHint': '立即生效。受系统限制，设置可能不会生效。',
+      'refreshRateSecurityHint': '如果没有问题不要随意改动，出现问题请重置应用数据。',
       'ehSetting': 'EH 网站设置',
       'securitySetting': '安全设置',
       'readSetting': '阅读设置',
@@ -304,6 +306,7 @@ class zh_CN {
       'hidden': '屏蔽',
       'nope': '无',
       'status': '状态',
+      'tagSetDefaultColor': '标签集默认颜色',
       'weight': '权重',
       'color': '颜色',
       'getTagSetFailed': '获取标签数据失败',

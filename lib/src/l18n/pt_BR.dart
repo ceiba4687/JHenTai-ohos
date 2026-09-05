@@ -203,7 +203,8 @@ class pt_BR {
       'blockUploaderLocally': 'Block user locally',
       'blockTitleLocally': 'Bloquear título selecionado localmente',
       'blockRuleAlreadyExists': 'Esta regra já existe',
-      'block': 'Block',
+      'blockThisGallery': 'Block this gallery',
+      'blockGallerySuccess': 'Gallery blocked. You can modify it in Preference - Block Rules',
 
       /// detail dialog
       'galleryUrl': 'Gallery Url',
@@ -266,7 +267,8 @@ class pt_BR {
       'advancedSetting': 'Configurações avançadas',
       'refreshRate': 'Taxa de atualização',
       'refreshRateCurrent': 'Atual',
-      'refreshRateHint': 'Aplica-se imediatamente. Auto segue o padrão do sistema.',
+      'refreshRateHint': 'Aplica-se imediatamente. Pode não surtir efeito devido a limitações do sistema.',
+      'refreshRateSecurityHint': 'Não altere se não houver problemas. Se ocorrerem problemas, redefina os dados do aplicativo.',
       'securitySetting': 'Configurções de segurança',
       'ehSetting': 'Configuração do site EH',
       'readSetting': 'Configurações de leitura',
@@ -306,6 +308,7 @@ class pt_BR {
       'hidden': 'Escondido',
       'nope': 'Nope(Não)',
       'status': 'Status',
+      'tagSetDefaultColor': 'Cor padrão do conjunto de tags',
       'weight': 'Peso',
       'color': 'Cor',
       'getTagSetFailed': 'Falha ao obter conjunto de tags',

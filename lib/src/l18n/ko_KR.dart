@@ -202,7 +202,8 @@ class ko_KR {
       'blockUploaderLocally': 'Block user locally',
       'blockTitleLocally': '선택한 제목을 로컬에서 차단',
       'blockRuleAlreadyExists': '이 규칙은 이미 존재합니다',
-      'block': 'Block',
+      'blockThisGallery': 'Block this gallery',
+      'blockGallerySuccess': 'Gallery blocked. You can modify it in Preference - Block Rules',
 
       /// detail dialog
       'galleryUrl': '갤러리 주소',
@@ -265,7 +266,8 @@ class ko_KR {
       'advancedSetting': '고급 설정',
       'refreshRate': 'Refresh Rate',
       'refreshRateCurrent': 'Current',
-      'refreshRateHint': 'Applies immediately. Auto follows the system default.',
+      'refreshRateHint': '즉시 적용됩니다. 시스템 제한으로 적용되지 않을 수 있습니다.',
+      'refreshRateSecurityHint': '문제가 없다면 변경하지 마세요. 문제가 발생하면 앱 데이터를 초기화하세요.',
       'securitySetting': '보안 설정',
       'ehSetting': 'EH 사이트 설정',
       'readSetting': '뷰어 설정',
@@ -305,6 +307,7 @@ class ko_KR {
       'hidden': '숨김',
       'nope': '없음',
       'status': '상태',
+      'tagSetDefaultColor': '태그 세트 기본 색상',
       'weight': '가중치',
       'color': '색상',
       'getTagSetFailed': '태그 목록 불러오기 실패',

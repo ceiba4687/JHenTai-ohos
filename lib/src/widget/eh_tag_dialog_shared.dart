@@ -11,9 +11,11 @@ import 'package:jhentai/src/mixin/login_required_logic_mixin.dart';
 import 'package:jhentai/src/routes/routes.dart';
 import 'package:jhentai/src/setting/my_tags_setting.dart';
 import 'package:jhentai/src/setting/preference_setting.dart';
+import 'package:jhentai/src/setting/style_setting.dart';
 import 'package:jhentai/src/utils/eh_spider_parser.dart';
 import 'package:jhentai/src/utils/route_util.dart';
 import 'package:jhentai/src/utils/toast_util.dart';
+import 'package:jhentai/src/widget/eh_tag_edit_dialog.dart';
 import 'package:jhentai/src/widget/eh_tag_set_dialog.dart';
 import 'package:jhentai/src/widget/eh_warning_image.dart';
 import 'package:jhentai/src/widget/eh_wheel_speed_controller.dart';
@@ -21,9 +23,11 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../database/database.dart';
 import '../model/gallery_tag.dart';
+import '../model/tag_set.dart';
 import '../network/eh_request.dart';
 import '../setting/user_setting.dart';
 import '../service/log.dart';
+import '../utils/color_util.dart';
 import '../utils/snack_util.dart';
 import '../utils/string_uril.dart';
 import 'loading_state_indicator.dart';
@@ -98,7 +102,7 @@ mixin EHTagVoteLogicMixin<T extends StatefulWidget> on State<T> implements Login
   }
 
   Future<void> vote({required bool isVotingUp}) async {
-    if (!userSetting.hasLoggedIn()) { 
+    if (!userSetting.hasLoggedIn()) {
       showLoginToast();
       return;
     }
@@ -224,6 +228,93 @@ mixin EHTagVoteLogicMixin<T extends StatefulWidget> on State<T> implements Login
     await doAddNewTagSet(result.tagSetNo, watch, previousTagSetNo: previousTagSetNo);
   }
 
+  /// Follow/hide buttons open this editor instead when the tag is already in a
+  /// tag set, so users can tweak status / weight / color right from the detail page.
+  void showTagEditDialog({required int tagSetNo}) {
+    ({bool enable, Color? tagSetBackGroundColor, List<WatchedTag> tags})? tagSet = myTagsSetting.onlineTags[tagSetNo];
+    if (tagSet == null) {
+      return;
+    }
+
+    WatchedTag? onlineTag = tagSet.tags.firstWhereOrNull(
+      (t) => t.tagData.namespace == tagData.namespace && t.tagData.key == tagData.key,
+    );
+    if (onlineTag == null) {
+      return;
+    }
+
+    bool useDialog = !styleSetting.isInMobileLayout;
+
+    Widget dialog = EHTagEditDialog(
+      tag: onlineTag,
+      tagSetBackgroundColor: tagSet.tagSetBackGroundColor,
+      isDialog: useDialog,
+      onConfirm: (_, WatchedTag newTag) => doUpdateWatchedTag(newTag, tagSetNo: tagSetNo),
+      onDelete: (WatchedTag _) => doDeleteWatchedTag(tagSetNo: tagSetNo, watch: onlineTag.watched),
+    );
+
+    if (useDialog) {
+      // Get.dialog doesn't provide a Material ancestor like Dialog does, and the
+      // editor content (InkWell / SegmentedButton / buttons) requires one.
+      Get.dialog(Dialog(child: dialog), barrierDismissible: true);
+    } else {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (_) => dialog,
+      );
+    }
+  }
+
+  /// Update a watched tag's status / weight / color, then refresh the local cache
+  /// before flipping the button state so the UI reflects everything in one go.
+  Future<void> doUpdateWatchedTag(WatchedTag newTag, {required int tagSetNo}) async {
+    log.info('Update watched tag: ${newTag.tagData.namespace}:${newTag.tagData.key}, tagSetNo:$tagSetNo');
+
+    setStateSafely(() {
+      addWatchedTagState = LoadingState.loading;
+      addHiddenTagState = LoadingState.loading;
+    });
+
+    try {
+      await ehRequest.requestUpdateWatchedTag(
+        apiuid: userSetting.ipbMemberId.value!,
+        apikey: apikey,
+        tagId: newTag.tagId,
+        tagColor: color2aRGBString(newTag.backgroundColor),
+        tagWeight: newTag.weight,
+        watch: newTag.watched,
+        hidden: newTag.hidden,
+      );
+    } on DioException catch (e) {
+      log.error('updateTagFailed'.tr, e.errorMsg);
+      toast('${'updateTagFailed'.tr}: ${e.errorMsg}', isShort: false);
+      setStateSafely(() {
+        addWatchedTagState = LoadingState.idle;
+        addHiddenTagState = LoadingState.idle;
+      });
+      return;
+    } on EHSiteException catch (e) {
+      log.error('updateTagFailed'.tr, e.message);
+      toast('${'updateTagFailed'.tr}: ${e.message}', isShort: false);
+      setStateSafely(() {
+        addWatchedTagState = LoadingState.idle;
+        addHiddenTagState = LoadingState.idle;
+      });
+      return;
+    }
+
+    await myTagsSetting.refreshOnlineTagSets(tagSetNo);
+
+    setStateSafely(() {
+      addWatchedTagState = LoadingState.idle;
+      addHiddenTagState = LoadingState.idle;
+    });
+
+    toast('success'.tr);
+  }
+
   Future<void> doDeleteWatchedTag({required int tagSetNo, required bool watch}) async {
     final int? tagId = findOnlineWatchedTagId();
     if (tagId == null) {
@@ -236,7 +327,7 @@ mixin EHTagVoteLogicMixin<T extends StatefulWidget> on State<T> implements Login
       if (watch) {
         addWatchedTagState = LoadingState.loading;
       } else {
-        addHiddenTagState = LoadingState.loading; 
+        addHiddenTagState = LoadingState.loading;
       }
     });
 
@@ -343,7 +434,7 @@ mixin EHTagVoteLogicMixin<T extends StatefulWidget> on State<T> implements Login
       return;
     }
     backRoute();
-    toRoute(Routes.tagSets, arguments: '${tagData.namespace}:${tagData.key}');
+    toRoute(Routes.tagSets);
   }
 }
 
@@ -417,24 +508,24 @@ class EHTagDialogInfo extends StatelessWidget {
               shrinkWrap: true,
               controller: scrollController,
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+            ),
+            textStyle: const TextStyle(fontSize: 13),
+            onErrorBuilder: (context, element, error) => Text('$element error: $error'),
+            onLoadingBuilder: (context, element, loadingProgress) => const CircularProgressIndicator(),
+            onTapUrl: launchUrlString,
+            customWidgetBuilder: (element) {
+              if (element.localName != 'img') {
+                return null;
+              }
+              return Center(
+                child: EHWarningImage(
+                  warning: preferenceSetting.showR18GImageDirectly.isFalse && element.attributes['nsfw'] == 'R18G',
+                  src: element.attributes['src']!,
+                ).marginSymmetric(vertical: 20),
+              );
+            },
           ),
-          textStyle: const TextStyle(fontSize: 13),
-          onErrorBuilder: (context, element, error) => Text('$element error: $error'),
-          onLoadingBuilder: (context, element, loadingProgress) => const CircularProgressIndicator(),
-          onTapUrl: launchUrlString,
-          customWidgetBuilder: (element) {
-            if (element.localName != 'img') {
-              return null;
-            }
-            return Center(
-              child: EHWarningImage(
-                warning: preferenceSetting.showR18GImageDirectly.isFalse && element.attributes['nsfw'] == 'R18G',
-                src: element.attributes['src']!,
-              ).marginSymmetric(vertical: 20),
-            );
-          },
         ),
-      ),
       ),
     ).enableMouseDrag();
   }

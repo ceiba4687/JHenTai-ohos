@@ -202,7 +202,8 @@ class zh_TW {
       'blockUploaderLocally': '於本機端隱藏的上傳者',
       'blockTitleLocally': '於本機端隱藏已選取的標題',
       'blockRuleAlreadyExists': '該規則已存在',
-      'block': '隱藏',
+      'blockThisGallery': '隱藏該畫廊',
+      'blockGallerySuccess': '已隱藏該畫廊，可在 偏好設定-隱藏規則 中修改',
 
       /// detail dialog
       'galleryUrl': '畫廊連結',
@@ -264,7 +265,8 @@ class zh_TW {
       'advancedSetting': '進階設定',
       'refreshRate': '重新整理率',
       'refreshRateCurrent': '目前',
-      'refreshRateHint': '立即生效。「自動」將跟隨系統預設設定。',
+      'refreshRateHint': '立即生效。受系統限制，設定可能不會生效。',
+      'refreshRateSecurityHint': '如果沒有問題請勿隨意變更，出現問題請重設應用程式資料。',
       'ehSetting': 'EH 網站設定',
       'securitySetting': '安全設定',
       'readSetting': '閱讀設定',
@@ -304,6 +306,7 @@ class zh_TW {
       'hidden': '隱藏',
       'nope': '無',
       'status': '狀態',
+      'tagSetDefaultColor': '標籤集預設顏色',
       'weight': '權重',
       'color': '顏色',
       'getTagSetFailed': '獲取標籤資料失敗',

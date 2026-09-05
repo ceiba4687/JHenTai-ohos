@@ -202,7 +202,8 @@ class en_US {
       'blockUploaderLocally': 'Block user locally',
       'blockTitleLocally': 'Block selected title locally',
       'blockRuleAlreadyExists': 'This rule already exists',
-      'block': 'Block',
+      'blockThisGallery': 'Block this gallery',
+      'blockGallerySuccess': 'Gallery blocked. You can modify it in Preference - Block Rules',
 
       /// detail dialog
       'galleryUrl': 'Gallery Url',
@@ -265,7 +266,8 @@ class en_US {
       'advancedSetting': 'Advanced Setting',
       'refreshRate': 'Refresh Rate',
       'refreshRateCurrent': 'Current',
-      'refreshRateHint': 'Applies immediately. Auto follows the system default.',
+      'refreshRateHint': 'Applies immediately. May not take effect due to system restrictions.',
+      'refreshRateSecurityHint': 'Only change if necessary. If issues occur, reset the app data.',
       'securitySetting': 'Security Setting',
       'ehSetting': 'EH Site Setting',
       'readSetting': 'Read Setting',
@@ -305,6 +307,7 @@ class en_US {
       'hidden': 'Hidden',
       'nope': 'Nope',
       'status': 'Status',
+      'tagSetDefaultColor': 'Default color of tag set',
       'weight': 'Weight',
       'color': 'Color',
       'getTagSetFailed': 'Get Tag Set Failed',

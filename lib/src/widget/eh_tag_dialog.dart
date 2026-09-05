@@ -73,6 +73,7 @@ class _EHTagDialogState extends State<EHTagDialog> with EHTagVoteLogicMixin<EHTa
             EHTagDialogHeader(tagData: tagData, showCloseButton: true),
             if (tagData.tagName != null) Flexible(child: EHTagDialogInfo(tagData: tagData, maxHeight: 300, scrollController: scrollController)),
             const Divider(height: 1),
+            const SizedBox(height: 4),
             EHTagDialogDesktopActions(
               currentVote: currentVote,
               voteUpState: voteUpState,
@@ -82,8 +83,22 @@ class _EHTagDialogState extends State<EHTagDialog> with EHTagVoteLogicMixin<EHTa
               tagInfo: findOnlineTag(),
               onVoteUp: () => vote(isVotingUp: true),
               onVoteDown: () => vote(isVotingUp: false),
-              onFollow: () => handleAddTagToSet(watch: true),
-              onHide: () => handleAddTagToSet(watch: false),
+              onFollow: () {
+                ({int tagSetNo, bool watched, bool hidden})? info = findOnlineTag();
+                if (info != null) {
+                  showTagEditDialog(tagSetNo: info.tagSetNo);
+                } else {
+                  handleAddTagToSet(watch: true);
+                }
+              },
+              onHide: () {
+                ({int tagSetNo, bool watched, bool hidden})? info = findOnlineTag();
+                if (info != null) {
+                  showTagEditDialog(tagSetNo: info.tagSetNo);
+                } else {
+                  handleAddTagToSet(watch: false);
+                }
+              },
               onGotoTagSets: gotoTagSets,
             ),
           ],

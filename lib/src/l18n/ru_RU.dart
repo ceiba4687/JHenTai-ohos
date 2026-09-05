@@ -205,7 +205,8 @@ class ru_RU {
       'blockUploaderLocally': 'Заблокировать пользователя локально',
       'blockTitleLocally': 'Заблокировать выбранное название локально',
       'blockRuleAlreadyExists': 'Это правило уже существует',
-      'block': 'Block',
+      'blockThisGallery': 'Заблокировать эту галерею',
+      'blockGallerySuccess': 'Галерея заблокирована. Изменить можно в Настройках — Правила блокировки',
 
       /// detail dialog
       'galleryUrl': 'URL Галереи',
@@ -269,7 +270,8 @@ class ru_RU {
       'advancedSetting': 'Расширенные настройки',
       'refreshRate': 'Частота обновления',
       'refreshRateCurrent': 'Текущая',
-      'refreshRateHint': 'Применяется сразу. «Авто» следует системному значению.',
+      'refreshRateHint': 'Применяется сразу. Может не сработать из-за ограничений системы.',
+      'refreshRateSecurityHint': 'Не меняйте без необходимости. При проблемах сбросьте данные приложения.',
       'securitySetting': 'Настройки безопасности',
       'ehSetting': 'Настройки сайта EH',
       'readSetting': 'Настройки чтения',
@@ -309,6 +311,7 @@ class ru_RU {
       'hidden': 'Скрытый',
       'nope': 'Нет',
       'status': 'Статус',
+      'tagSetDefaultColor': 'Стандартный цвет набора тегов',
       'weight': 'Вес',
       'color': 'Цвет',
       'getTagSetFailed': 'Не удалось получить набор тегов',

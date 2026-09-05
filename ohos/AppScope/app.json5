@@ -2,8 +2,8 @@
   "app": {
     "bundleName": "top.jtmonster.jhentai.ohos",
     "vendor": "JTMonster",
-    "versionCode": 332,
-    "versionName": "8.0.14",
+    "versionCode": 333,
+    "versionName": "8.0.16",
     "icon": "$media:app_icon",
     "label": "$string:app_name"
   }
