@@ -1,4 +1,8 @@
 class JHConsts {
+  static const String repositoryUrl = 'https://github.com/ceiba4687/JHenTai-ohos';
+  static const String releasesUrl = '$repositoryUrl/releases';
+  static const String releasesApiUrl = 'https://api.github.com/repos/ceiba4687/JHenTai-ohos/releases';
+
   static const String serverAddress = 'https://jhentai.top';
 
   static const String APP_ID_HEADER = "X-App-Id";

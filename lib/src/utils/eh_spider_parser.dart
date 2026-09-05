@@ -40,6 +40,7 @@ import '../model/gallery.dart';
 import '../model/gallery_metadata.dart';
 import 'byte_util.dart';
 import 'check_util.dart';
+import 'version_util.dart';
 import '../service/log.dart';
 
 typedef HtmlParser<T> = T Function(Headers headers, dynamic data);
@@ -975,10 +976,24 @@ class EHSpiderParser {
     return hath?.trim();
   }
 
-  static String githubReleasePage2LatestVersion(Headers headers, dynamic data) {
+  static String? githubReleasePage2LatestVersion(Headers headers, dynamic data) {
     List releases = data;
-    Map latestRelease = releases[0];
-    return latestRelease['tag_name'];
+    String? latestVersion;
+    for (Map release in releases.whereType<Map>()) {
+      if (release['draft'] == true || release['prerelease'] == true) {
+        continue;
+      }
+      String? tag = release['tag_name'] is String ? (release['tag_name'] as String).trim() : null;
+      if (tag == null || !isValidAppVersion(tag)) {
+        continue;
+      }
+      List assets = release['assets'] is List ? release['assets'] : [];
+      bool hasHap = assets.whereType<Map>().any((asset) => asset['name'] is String && (asset['name'] as String).endsWith('.hap'));
+      if (hasHap && (latestVersion == null || compareVersion(tag, latestVersion) > 0)) {
+        latestVersion = tag;
+      }
+    }
+    return latestVersion;
   }
 
   static String latestReleaseResponse2Tag(Headers headers, dynamic data) {

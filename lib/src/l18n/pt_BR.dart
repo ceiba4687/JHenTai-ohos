@@ -742,6 +742,7 @@ class pt_BR {
 
       /// about page
       'author': 'Autor',
+      'portedBy': 'Portado por',
       'Q&A': 'Q&A',
       'telegramHint': 'You can ask your questions in github first',
 

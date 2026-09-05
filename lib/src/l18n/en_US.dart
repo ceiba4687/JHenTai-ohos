@@ -741,6 +741,7 @@ class en_US {
 
       /// about page
       'author': 'Author',
+      'portedBy': 'Ported by',
       'Q&A': 'Q&A',
       'telegramHint': 'You can ask your questions in github first',
 

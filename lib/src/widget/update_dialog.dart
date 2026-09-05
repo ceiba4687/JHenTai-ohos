@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jhentai/src/consts/jh_consts.dart';
 import 'package:jhentai/src/enum/config_enum.dart';
 import 'package:jhentai/src/service/local_config_service.dart';
 import 'package:jhentai/src/utils/route_util.dart';
@@ -45,7 +46,7 @@ class UpdateDialog extends StatelessWidget {
           child: Text('check'.tr + ' ->'),
           onPressed: () {
             backRoute();
-            launchUrlString('https://github.com/jiangtian616/JHenTai/releases', mode: LaunchMode.externalApplication);
+            launchUrlString(JHConsts.releasesUrl, mode: LaunchMode.externalApplication);
           },
         )
       ],

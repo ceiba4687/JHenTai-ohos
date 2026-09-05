@@ -747,6 +747,7 @@ favnote：匹配收藏备注
 
       /// about page
       'author': '创作者',
+      'portedBy': '移植者',
       'Q&A': '常见问题',
       'telegramHint': '账号登录、里站、网络等基础问题请自行搜索解决',
 

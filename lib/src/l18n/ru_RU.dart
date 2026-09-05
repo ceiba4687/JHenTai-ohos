@@ -750,6 +750,7 @@ class ru_RU {
 
       /// about page
       'author': 'Автор',
+      'portedBy': 'Автор порта',
       'Q&A': 'Вопросы и ответы',
       'telegramHint': 'Вы можете сначала задать вопросы на Github',
 

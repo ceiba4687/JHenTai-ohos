@@ -741,6 +741,7 @@ class ko_KR {
 
       /// about page
       'author': '제작자',
+      'portedBy': '이식 개발자',
       'Q&A': 'Q&A',
       'telegramHint': 'You can ask your questions in github first',
 

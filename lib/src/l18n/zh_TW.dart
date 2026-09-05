@@ -747,6 +747,7 @@ favnote：配對收藏備註
 
       /// about page
       'author': '原作者',
+      'portedBy': '移植者',
       'Q&A': '常見問題',
       'telegramHint': '帳號登入、裡站、網路等基礎問題請自行搜尋解決',
 

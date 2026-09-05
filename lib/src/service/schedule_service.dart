@@ -9,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:jhentai/src/consts/jh_consts.dart';
 import 'package:jhentai/src/database/dao/archive_dao.dart';
 import 'package:jhentai/src/database/dao/gallery_dao.dart';
 import 'package:jhentai/src/extension/dio_exception_extension.dart';
@@ -66,37 +67,35 @@ class ScheduleService with JHLifeCircleBeanErrorCatch implements JHLifeCircleBea
       return;
     }
 
-    String url = 'https://api.github.com/repos/jiangtian616/JHenTai/releases';
-    String latestVersion;
-
     try {
-      latestVersion = (await retry(
-        () => ehRequest.get(url: url, parser: EHSpiderParser.githubReleasePage2LatestVersion),
+      String? latestVersion = await retry(
+        () => ehRequest.get<String?>(url: JHConsts.releasesApiUrl, parser: EHSpiderParser.githubReleasePage2LatestVersion),
         maxAttempts: 3,
-      ))
-          .trim()
-          .split('+')[0];
+      );
+      if (latestVersion == null) {
+        return;
+      }
+
+      String? dismissVersion = await localConfigService.read(configKey: ConfigEnum.dismissVersion);
+      if (dismissVersion == latestVersion) {
+        return;
+      }
+
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String currentVersion = 'v${packageInfo.version}'.trim();
+      log.info('Latest version:[$latestVersion], current version: [$currentVersion], current build: [${packageInfo.buildNumber}]');
+
+      if (compareVersion(currentVersion, latestVersion) >= 0) {
+        return;
+      }
+
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Get.dialog(UpdateDialog(currentVersion: currentVersion, latestVersion: latestVersion));
+      });
     } on Exception catch (_) {
       log.info('check update failed');
       return;
     }
-
-    String? dismissVersion = await localConfigService.read(configKey: ConfigEnum.dismissVersion);
-    if (dismissVersion == latestVersion) {
-      return;
-    }
-
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String currentVersion = 'v${packageInfo.version}'.trim();
-    log.info('Latest version:[$latestVersion], current version: [$currentVersion], current build: [${packageInfo.buildNumber}]');
-
-    if (compareVersion(currentVersion, latestVersion) >= 0) {
-      return;
-    }
-
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Get.dialog(UpdateDialog(currentVersion: currentVersion, latestVersion: latestVersion));
-    });
   }
 
   Future<void> refreshGalleryTags() async {

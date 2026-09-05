@@ -49,6 +49,20 @@ The wrapper accepts these optional path overrides:
 - `JHENTAI_DEVECO_TOOL_HOME`
 - `JHENTAI_JAVA_HOME`
 
+## Update source and release versions
+
+Update checks and the update dialog use the Releases in
+`ceiba4687/JHenTai-ohos`. Only published, non-prerelease versions with a `.hap`
+asset are eligible. Tags support `v8.0.16` and `v8.0.16-ohos.1` formats; a
+version without the OHOS suffix is treated as port revision 1.
+
+For a second port release of the same upstream version, use a matching suffix
+in the tag and installed version, for example tag `v8.0.16-ohos.2`, pubspec
+version `8.0.16-ohos.2+334`, and OHOS `versionName: 8.0.16-ohos.2`. Keep
+`pubspec.yaml` and `ohos/AppScope/app.json5` aligned and increment the build
+number / `versionCode` on every release. This lets the updater distinguish
+port revisions after installation. Build metadata does not affect comparison.
+
 ## Signing
 
 Unsigned HAP builds are sufficient for compile checks. To run on a device,
