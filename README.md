@@ -63,13 +63,6 @@ Set-Location JHenTai-ohos
 .\tool\build-ohos.ps1 -Mode release -NoCodesign
 ```
 
-若 GitHub 依赖下载较慢，可仅为当前终端配置代理：
-
-```powershell
-$env:JHENTAI_GIT_PROXY = 'http://127.0.0.1:4787'
-.\tool\flutter-ohos.ps1 pub get
-```
-
 可安装的 HAP 需要由安装者在 DevEco Studio 中配置签名。详细工具链、插件来源、签名和
 设备验证信息见 [HarmonyOS 开发说明](./docs/ohos.md)。
 

@@ -15,6 +15,8 @@ concurrency:
 
 jobs:
   Build:
+    # This multi-platform workflow belongs to upstream; OHOS releases use HAPs.
+    if: github.repository == 'jiangtian616/JHenTai'
     strategy:
       fail-fast: false
       matrix:
@@ -226,7 +228,7 @@ jobs:
           path: ${{ matrix.artifact_path }}
           if-no-files-found: error
   Publish:
-    if: startsWith(github.ref, 'refs/tags/')
+    if: github.repository == 'jiangtian616/JHenTai' && startsWith(github.ref, 'refs/tags/')
     name: Publish
     needs: Build
     runs-on: ubuntu-latest
