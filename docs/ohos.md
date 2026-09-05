@@ -152,8 +152,27 @@ Validation on 2026-09-05:
   API 18. All 19 OHOS plugins remain registered, and the HAP includes the arm64
   Flutter engine, application, and SQLite libraries.
 
-The device checks below were performed on 8.0.14. This sync has been verified
-with tests and a release build; device smoke testing of 8.0.16 is still pending.
+The 8.0.16 x64 debug build was also tested on the existing Pura X View emulator
+(HarmonyOS 7.0.0.105 / API 26) on 2026-09-05:
+
+- Upgrading from 8.0.14 preserved application data. Startup, database and plugin
+  initialization, and dashboard loading succeeded without an unhandled Flutter
+  exception. Four handled connection timeouts appeared in the captured log.
+- Domain fronting switched off and back on immediately. Page cache duration
+  changed from 1h to 3d and persisted when reopening the page; image cache
+  duration changed from 7d to 14d. Both durations were restored afterward.
+- The unsupported refresh-rate control remained hidden on OHOS.
+- The production tag editor was exercised through a temporary local fixture:
+  its bottom sheet, dialog, custom color picker, color reset, and status-change
+  confirmation worked. The fixture made no account or network changes; the
+  emulator was not logged in, so server-side tag updates were not tested.
+- Sending the emulator's rotation command crashed the Windows emulator process
+  with DevEco error `00802003` (Emulator 26.0.0.400). Landscape device testing
+  remains blocked by that emulator failure; the Flutter landscape widget tests
+  pass. The emulator was restarted and the normal application restored.
+
+The earlier checks below were performed on 8.0.14. Physical-device smoke
+testing of 8.0.16 is still pending.
 
 ## Emulator verification
 
